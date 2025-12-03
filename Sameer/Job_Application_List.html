@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>View My Applications — Job Portal</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent:#3b82f6;
+      --success:#10b981;
+      --danger:#ef4444;
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 6px 18px rgba(16,24,40,0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#eef3fb);color:#0f172a}
+    .container{max-width:1100px;margin:36px auto;padding:20px}
+    .card{background:var(--card);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+
+    header.row{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    h1{font-size:20px;margin:0}
+    p.lead{color:var(--muted);margin:4px 0 0;font-size:13px}
+
+    .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .search{display:flex;align-items:center;background:var(--glass);padding:8px;border-radius:10px;border:1px solid rgba(15,23,42,0.04)}
+    .search input{border:0;background:transparent;outline:none;padding:6px;font-size:14px}
+
+    select,input[type=date]{padding:8px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);background:#fff}
+    .btn{padding:8px 12px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(59,130,246,0.12)}
+    .btn.danger{background:var(--danger)}
+
+    table{width:100%;border-collapse:collapse;margin-top:16px}
+    thead th{text-align:left;padding:12px;color:var(--muted);font-size:13px;border-bottom:1px solid rgba(15,23,42,0.06)}
+    tbody tr{background:linear-gradient(180deg,transparent,transparent);transition:transform .15s ease,box-shadow .15s ease}
+    tbody tr:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(2,6,23,0.06)}
+    td{padding:12px 12px;font-size:14px;border-bottom:1px solid rgba(15,23,42,0.04);vertical-align:middle}
+
+    .badge{display:inline-block;padding:6px 8px;border-radius:999px;font-size:12px;font-weight:600}
+    .badge.sub{background:#eef2ff;color:#3730a3}
+    .badge.under{background:#fffbeb;color:#92400e}
+    .badge.success{background:#ecfdf5;color:#065f46}
+    .muted{color:var(--muted);font-size:13px}
+
+    .actions{display:flex;gap:8px}
+    .link{background:transparent;border:0;color:var(--accent);cursor:pointer;font-weight:600}
+
+    .pager{display:flex;gap:8px;align-items:center;justify-content:flex-end;padding:12px}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* responsive */
+    @media (max-width:860px){
+      thead th.hide-sm, td.hide-sm{display:none}
+      .controls{flex-direction:column;align-items:stretch}
+      .pager{justify-content:center}
+    }
+
+    /* modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:none;align-items:center;justify-content:center;padding:20px}
+    .modal{background:var(--card);border-radius:12px;padding:18px;max-width:480px;width:100%;box-shadow:0 20px 50px rgba(2,6,23,0.4)}
+    .modal h3{margin:0 0 8px}
+    .modal p{margin:0 0 14px;color:var(--muted)}
+    .modal .row{display:flex;gap:8px;justify-content:flex-end}
+
+    /* empty state */
+    .empty{padding:40px;text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="row">
+        <div>
+          <h1>My Applications</h1>
+          <p class="lead">Here’s the list of jobs you've applied to. Track status, download resume, or withdraw an application.</p>
+        </div>
+        <div class="controls">
+          <div class="search" style="min-width:220px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.7;margin-right:6px"><path d="M21 21l-4.35-4.35" stroke="#111827" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="11" cy="11" r="5" stroke="#111827" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle></svg>
+            <input id="q" placeholder="Search by job title, company or id"/>
+          </div>
+
+          <select id="statusFilter" aria-label="Filter by status">
+            <option value="all">All Statuses</option>
+            <option value="submitted">Submitted</option>
+            <option value="under-review">Under Review</option>
+            <option value="shortlisted">Shortlisted</option>
+            <option value="offered">Offered</option>
+            <option value="rejected">Rejected</option>
+          </select>
+
+          <input type="date" id="dateFilter" title="Applied after" />
+
+          <button class="btn" id="downloadCsv">Download CSV</button>
+        </div>
+      </div>
+
+      <div id="tableWrap">
+        <table id="appsTable" aria-describedby="My applications table">
+          <thead>
+            <tr>
+              <th>Application ID</th>
+              <th class="hide-sm">Job Title</th>
+              <th class="hide-sm">Company</th>
+              <th>Applied</th>
+              <th>Status</th>
+              <th class="hide-sm">Stage</th>
+              <th class="hide-sm">Resume</th>
+              <th style="text-align:right">Action</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <!-- rows injected by JS -->
+          </tbody>
+        </table>
+
+        <div id="empty" class="empty" style="display:none">
+          <h3>No applications yet</h3>
+          <p>Apply to jobs to see them listed here. Use the job search to find roles that fit you.</p>
+        </div>
+
+        <div class="pager">
+          <div class="small" id="summary">Showing 0 of 0</div>
+          <div>
+            <button class="btn ghost" id="prev">Prev</button>
+            <button class="btn ghost" id="next">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Withdraw modal -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3>Withdraw Application?</h3>
+      <p id="modalText">Are you sure you want to withdraw application <strong>#APP-001</strong>? This action cannot be undone.</p>
+      <div class="row">
+        <button class="btn ghost" id="cancelWithdraw">Cancel</button>
+        <button class="btn danger" id="confirmWithdraw">Yes, Withdraw</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // sample data
+    const data = [
+      {appid:101, job:'Software Developer', company:'InnovaTech', applied:'2025-12-05', status:'under-review', stage:'HR Round', resume:'resume_101.pdf'},
+      {appid:102, job:'Web Designer', company:'PixelCraft', applied:'2025-12-03', status:'submitted', stage:'Screening', resume:'resume_102.pdf'},
+      {appid:103, job:'Data Analyst', company:'DataSense', applied:'2025-11-25', status:'rejected', stage:'—', resume:'resume_103.pdf'},
+      {appid:104, job:'Frontend Engineer', company:'BlueWave', applied:'2025-12-01', status:'shortlisted', stage:'Technical Round', resume:'resume_104.pdf'},
+      {appid:105, job:'QA Engineer', company:'AssureX', applied:'2025-11-20', status:'offered', stage:'Offer Released', resume:'resume_105.pdf'},
+      {appid:106, job:'Product Manager', company:'Nova Labs', applied:'2025-12-02', status:'under-review', stage:'Screening', resume:'resume_106.pdf'},
+    ];
+
+    // state
+    let filtered = [...data];
+    let page = 1; const pageSize = 4;
+    let withdrawTarget = null;
+
+    const tbody = document.getElementById('tbody');
+    const q = document.getElementById('q');
+    const statusFilter = document.getElementById('statusFilter');
+    const dateFilter = document.getElementById('dateFilter');
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    const summary = document.getElementById('summary');
+    const empty = document.getElementById('empty');
+    const tableWrap = document.getElementById('tableWrap');
+
+    function render(){
+      // apply filters
+      const query = q.value.trim().toLowerCase();
+      const status = statusFilter.value;
+      const date = dateFilter.value;
+
+      filtered = data.filter(d=>{
+        if(status !== 'all' && d.status !== status) return false;
+        if(date && d.applied < date) return false;
+        if(query){
+          const s = `${d.job} ${d.company} ${d.appid}`.toLowerCase();
+          if(!s.includes(query)) return false;
+        }
+        return true;
+      });
+
+      const total = filtered.length;
+      const pages = Math.max(1, Math.ceil(total / pageSize));
+      if(page > pages) page = pages;
+      const start = (page-1)*pageSize; const end = start + pageSize;
+      const slice = filtered.slice(start,end);
+
+      tbody.innerHTML = '';
+      if(slice.length === 0){
+        document.getElementById('appsTable').style.display = 'none';
+        empty.style.display = 'block';
+      } else {
+        document.getElementById('appsTable').style.display = '';
+        empty.style.display = 'none';
+      }
+
+      slice.forEach(r=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>#${r.appid}</td>
+          <td class="hide-sm">${r.job}</td>
+          <td class="hide-sm">${r.company}</td>
+          <td>${r.applied}</td>
+          <td>${statusBadge(r.status)}</td>
+          <td class="hide-sm">${r.stage}</td>
+          <td class="hide-sm"><button class="link" onclick="downloadResume('${r.resume}')">Download</button></td>
+          <td style="text-align:right"><div class="actions"><button class="btn ghost" onclick="viewApp(${r.appid})">View</button><button class="btn" onclick="openWithdraw(${r.appid})">Withdraw</button></div></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      summary.textContent = `Showing ${Math.min(total, (page-1)*pageSize + 1)} - ${Math.min(total, page*pageSize)} of ${total}`;
+    }
+
+    function statusBadge(s){
+      if(s==='submitted') return '<span class="badge sub">Submitted</span>';
+      if(s==='under-review') return '<span class="badge under">Under Review</span>';
+      if(s==='shortlisted') return '<span class="badge sub">Shortlisted</span>';
+      if(s==='offered') return '<span class="badge success">Offered</span>';
+      if(s==='rejected') return '<span class="badge" style="background:#fff0f1;color:#9b1c1c">Rejected</span>';
+      return `<span class="badge">${s}</span>`;
+    }
+
+    // actions
+    function viewApp(id){
+      const found = data.find(d=>d.appid===id);
+      alert(`Application #${id}\nJob: ${found.job}\nCompany: ${found.company}\nStatus: ${found.status}\nApplied: ${found.applied}`);
+    }
+
+    function openWithdraw(id){
+      withdrawTarget = id;
+      const modal = document.getElementById('modalBackdrop');
+      document.getElementById('modalText').innerHTML = `Are you sure you want to withdraw application <strong>#${id}</strong>? This action cannot be undone.`;
+      modal.style.display = 'flex';
+    }
+
+    document.getElementById('cancelWithdraw').addEventListener('click',()=>{
+      document.getElementById('modalBackdrop').style.display='none'; withdrawTarget=null;
+    });
+
+    document.getElementById('confirmWithdraw').addEventListener('click',()=>{
+      if(withdrawTarget==null) return;
+      // simulate withdraw by removing from data
+      const idx = data.findIndex(d=>d.appid===withdrawTarget);
+      if(idx>-1) data.splice(idx,1);
+      withdrawTarget=null; document.getElementById('modalBackdrop').style.display='none'; page=1; render();
+    });
+
+    function downloadResume(filename){
+      alert('Pretend downloading: '+filename);
+    }
+
+    // pagination
+    prev.addEventListener('click',()=>{ if(page>1) {page--; render();}});
+    next.addEventListener('click',()=>{ if(page*pageSize < filtered.length) {page++; render();}});
+
+    // filters
+    [q,statusFilter,dateFilter].forEach(el=>el.addEventListener('input',()=>{page=1;render();}));
+
+    // csv download
+    document.getElementById('downloadCsv').addEventListener('click',()=>{
+      const rows = [['Application ID','Job Title','Company','Applied','Status','Stage','Resume']];
+      filtered.forEach(r=>rows.push([r.appid,r.job,r.company,r.applied,r.status,r.stage,r.resume]));
+      const csv = rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv],{type:'text/csv'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='applications.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    // initial render
+    render();
+  </script>
+</body>
+</html>
