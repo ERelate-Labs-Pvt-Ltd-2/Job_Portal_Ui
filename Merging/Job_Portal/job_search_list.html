@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Job Portal - Search Jobs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="css/job_search_list.css">
+</head>
+<body>
+
+<header>
+    <div class="logo">JobPortal</div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">My Applications</a>
+        <a href="#">Profile</a>
+        <a href="#">Logout</a>
+    </nav>
+</header>
+
+<div class="container">
+    <!-- Search & Filters -->
+    <section class="search-section">
+    </br>
+
+        <h2 style="font-size:16px; margin-bottom:10px;">Search Jobs</h2>
+
+        <form id="searchForm">
+            <div class="search-row">
+                <input type="text" id="keyword" placeholder="Job title, skill, company (e.g. Java Developer)">
+                <select id="location">
+                    <option value="">All Locations</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Remote">Remote</option>
+                </select>
+                <button type="submit">Search</button>
+            </div>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <strong>Job Type:</strong>
+                    <label><input type="radio" name="jobType" value="" checked> All</label>
+                    <label><input type="radio" name="jobType" value="Full-time"> Full-time</label>
+                    <label><input type="radio" name="jobType" value="Part-time"> Part-time</label>
+                    <label><input type="radio" name="jobType" value="Internship"> Internship</label>
+                </div>
+
+                <div class="filter-group">
+                    <strong>Experience:</strong>
+                    <label><input type="radio" name="experience" value="" checked> Any</label>
+                    <label><input type="radio" name="experience" value="0-1"> 0-1 yrs</label>
+                    <label><input type="radio" name="experience" value="1-3"> 1-3 yrs</label>
+                    <label><input type="radio" name="experience" value="3+"> 3+ yrs</label>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <!-- Results info -->
+    <div class="results-info" id="resultsInfo">
+        Showing all jobs
+    </div>
+
+    <!-- Job list -->
+    <section class="job-list" id="jobList">
+        <!-- Jobs will be rendered here by JS -->
+    </section>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" tabindex="-1">
+        <header class="modal-header">
+            <h2 class="modal-title" id="modalTitle">Job Title</h2>
+            <button class="close-btn" id="modalClose" aria-label="Close modal">&times;</button>
+        </header>
+        <section class="modal-body" id="modalBody">
+            <!-- Content filled dynamically -->
+        </section>
+        <footer class="modal-actions">
+            <button class="btn btn-secondary" id="copyBtn" type="button">Copy Details</button>
+            <button class="btn btn-primary" id="applyBtn" type="button">Apply (mailto)</button>
+        </footer>
+    </div>
+</div>
+
+<script>
+    const jobs = [
+        {
+            title: "Java Backend Developer",
+            company: "TCS",
+            location: "Mumbai",
+            salary: "4-6 LPA",
+            experience: "1-3",
+            type: "Full-time",
+            posted: "2 days ago",
+            skills: ["Java", "Spring Boot", "MySQL"],
+            description: "Work on backend services, microservices architecture, and relational DB design."
+        },
+        {
+            title: "React JS Developer",
+            company: "Infosys",
+            location: "Pune",
+            salary: "3-5 LPA",
+            experience: "0-1",
+            type: "Full-time",
+            posted: "5 days ago",
+            skills: ["React", "JavaScript", "HTML", "CSS"],
+            description: "Build modern web frontends and reusable components."
+        },
+        {
+            title: "Python Developer Intern",
+            company: "StartupX",
+            location: "Remote",
+            salary: "10k-15k / month",
+            experience: "0-1",
+            type: "Internship",
+            posted: "1 day ago",
+            skills: ["Python", "Django", "REST API"],
+            description: "Internship: build REST APIs and help automate workflows."
+        },
+        {
+            title: "Frontend Developer (Part-time)",
+            company: "ABC Solutions",
+            location: "Bangalore",
+            salary: "2-3 LPA",
+            experience: "1-3",
+            type: "Part-time",
+            posted: "1 week ago",
+            skills: ["HTML", "CSS", "JavaScript"],
+            description: "Part-time role for building landing pages and small features."
+        },
+        {
+            title: "Senior Java Developer",
+            company: "Wipro",
+            location: "Pune",
+            salary: "8-12 LPA",
+            experience: "3+",
+            type: "Full-time",
+            posted: "3 days ago",
+            skills: ["Java", "Spring Boot", "Microservices", "SQL"],
+            description: "Lead backend teams, design microservices and ensure scalability."
+        }
+    ];
+
+    const jobListEl = document.getElementById('jobList');
+    const searchForm = document.getElementById('searchForm');
+    const resultsInfoEl = document.getElementById('resultsInfo');
+
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const modalClose = document.getElementById('modalClose');
+    const copyBtn = document.getElementById('copyBtn');
+    const applyBtn = document.getElementById('applyBtn');
+
+    let currentJob = null;
+
+    // Render job list
+    function renderJobs(list) {
+        jobListEl.innerHTML = "";
+        if (list.length === 0) {
+            jobListEl.innerHTML = '<div class="no-results">No jobs found. Try changing filters.</div>';
+            resultsInfoEl.textContent = "0 jobs found";
+            return;
+        }
+        resultsInfoEl.textContent = `Showing ${list.length} job(s)`;
+
+        list.forEach((job, index) => {
+            const card = document.createElement('div');
+            card.className = 'job-card';
+
+            card.innerHTML = `
+                <div class="job-header">
+                    <div class="job-title">${job.title}</div>
+                    <div class="job-salary">${job.salary || ""}</div>
+                </div>
+                <div class="job-meta">
+                    <span><strong>${job.company}</strong></span>
+                    <span>${job.location}</span>
+                    <span>Exp: ${job.experience} yrs</span>
+                    <span>Posted: ${job.posted}</span>
+                </div>
+                <div class="skills">
+                    ${job.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}
+                </div>
+                <div class="job-footer">
+                    <span class="job-type">${job.type}</span>
+                    <button class="view-btn" data-index="${index}" aria-haspopup="dialog" aria-controls="modalOverlay">View Details</button>
+                </div>
+            `;
+
+            jobListEl.appendChild(card);
+        });
+    }
+
+    // Filter logic
+    function filterJobs(event) {
+        event.preventDefault();
+
+        const keyword = document.getElementById('keyword').value.trim().toLowerCase();
+        const location = document.getElementById('location').value;
+
+        const jobType = document.querySelector('input[name="jobType"]:checked').value;
+        const experience = document.querySelector('input[name="experience"]:checked').value;
+
+        const filtered = jobs.filter(job => {
+            const inTitle = job.title.toLowerCase().includes(keyword);
+            const inCompany = job.company.toLowerCase().includes(keyword);
+            const inSkills = job.skills.some(s => s.toLowerCase().includes(keyword));
+            const matchKeyword = keyword === "" || inTitle || inCompany || inSkills;
+
+            const matchLocation = location === "" || job.location === location;
+
+            const matchType = jobType === "" || job.type === jobType;
+
+            let matchExperience = true;
+            if (experience === "0-1") {
+                matchExperience = job.experience === "0-1";
+            } else if (experience === "1-3") {
+                matchExperience = job.experience === "1-3";
+            } else if (experience === "3+") {
+                matchExperience = job.experience === "3+";
+            }
+
+            return matchKeyword && matchLocation && matchType && matchExperience;
+        });
+
+        renderJobs(filtered);
+    }
+
+    // Modal open function
+    function openJobModal(job) {
+        currentJob = job;
+        modalTitle.textContent = `${job.title} — ${job.company}`;
+        modalBody.innerHTML = `
+            <p><strong>Location:</strong> ${job.location}</p>
+            <p><strong>Salary:</strong> ${job.salary}</p>
+            <p><strong>Experience:</strong> ${job.experience} yrs</p>
+            <p><strong>Type:</strong> ${job.type}</p>
+            <p><strong>Posted:</strong> ${job.posted}</p>
+            <p><strong>Description:</strong> ${job.description || 'No description provided.'}</p>
+            <div class="modal-skills"><strong>Skills:</strong> ${job.skills.map(s => `<span class="skill-tag">${s}</span>`).join(' ')}</div>
+        `;
+
+        // Mailto setup
+        const subject = encodeURIComponent(`${job.title} - Application`);
+        const bodyText = encodeURIComponent(`Hello,\n\nI am interested in the ${job.title} role at ${job.company}.\n\nRegards,\n[Your Name]`);
+        applyBtn.setAttribute('data-mailto', `mailto:hr@${job.company.toLowerCase().replace(/\s+/g,'')}.com?subject=${subject}&body=${bodyText}`);
+
+        modalOverlay.classList.add('active');
+        modalOverlay.setAttribute('aria-hidden', 'false');
+        modalOverlay.querySelector('.modal').focus();
+    }
+
+    // Close modal
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+        modalOverlay.setAttribute('aria-hidden', 'true');
+        currentJob = null;
+    }
+
+    // Event listeners
+    searchForm.addEventListener('submit', filterJobs);
+
+    // Delegate click on view buttons to open modal
+    jobListEl.addEventListener('click', (e) => {
+        if (e.target.matches('.view-btn')) {
+            const index = Number(e.target.getAttribute('data-index'));
+            if (!isNaN(index)) {
+                openJobModal(jobs[index]);
+            }
+        }
+    });
+
+    // Close modal button
+    modalClose.addEventListener('click', closeModal);
+
+    // Close modal on clicking outside modal content
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            closeModal();
+        }
+    });
+
+    // Copy details button
+    copyBtn.addEventListener('click', () => {
+        if (!currentJob) return;
+        const textToCopy = `
+Job Title: ${currentJob.title}
+Company: ${currentJob.company}
+Location: ${currentJob.location}
+Salary: ${currentJob.salary}
+Experience: ${currentJob.experience} yrs
+Type: ${currentJob.type}
+Posted: ${currentJob.posted}
+Description: ${currentJob.description || 'No description provided.'}
+Skills: ${currentJob.skills.join(', ')}
+        `;
+        navigator.clipboard.writeText(textToCopy.trim())
+            .then(() => alert('Job details copied to clipboard!'))
+            .catch(() => alert('Failed to copy job details.'));
+    });
+
+    // Apply button (mailto)
+    applyBtn.addEventListener('click', () => {
+        const mailto = applyBtn.getAttribute('data-mailto');
+        if (mailto) {
+            window.location.href = mailto;
+        }
+    });
+
+    // Initial render (show all jobs)
+    renderJobs(jobs);
+</script>
+
+</body>
+</html>
