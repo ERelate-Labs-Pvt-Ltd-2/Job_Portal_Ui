@@ -1,37 +1,34 @@
-/* Reset */
+/* RESET */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-family: Arial, sans-serif;
     background-color: #f5f5f7;
     color: #111827;
 }
 
-/* Header */
+/* HEADER */
 .header {
+    background-color: #111827;
+    color: white;
+    padding: 12px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 24px;
-    background-color: #111827;
-    color: #ffffff;
-    position: sticky;
-    top: 0;
-    z-index: 10;
 }
 
 .logo {
-    font-weight: 700;
     font-size: 20px;
+    font-weight: bold;
 }
 
 .nav a {
-    color: #e5e7eb;
     margin-left: 16px;
+    color: #d1d5db;
     text-decoration: none;
     font-size: 14px;
 }
@@ -40,41 +37,32 @@ body {
     text-decoration: underline;
 }
 
-.nav a.active {
-    font-weight: 600;
+.nav .active {
+    font-weight: bold;
 }
 
-/* Layout */
+/* MAIN */
 .main-container {
     max-width: 1150px;
-    margin: 24px auto 32px;
-    padding: 0 16px;
+    margin: 30px auto;
+    padding: 16px;
 }
 
-/* Hero section */
-.hero {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
-    gap: 24px;
-    align-items: stretch;
-    margin-bottom: 32px;
-}
-
+/* HERO */
 .hero-subtitle {
-    font-size: 14px;
     color: #6b7280;
-    margin-bottom: 4px;
+    font-size: 14px;
+    margin-bottom: 6px;
 }
 
 .hero-title {
     font-size: 32px;
+    font-weight: bold;
     margin-bottom: 8px;
 }
 
 .hero-desc {
-    font-size: 14px;
     color: #4b5563;
-    max-width: 480px;
     margin-bottom: 16px;
 }
 
@@ -84,58 +72,31 @@ body {
     flex-wrap: wrap;
 }
 
-.hero-card {
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 16px 18px;
-    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.18);
-    font-size: 14px;
-}
-
-.hero-card h3 {
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-
-.hero-card ul {
-    list-style: none;
-}
-
-.hero-card li {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-}
-
-/* Buttons */
+/* BUTTONS */
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     padding: 8px 16px;
-    border-radius: 999px;
-    border: none;
-    font-size: 14px;
+    border-radius: 20px;
     cursor: pointer;
+    font-size: 14px;
     text-decoration: none;
-    transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.12s ease;
-    white-space: nowrap;
+    display: inline-block;
+    transition: 0.2s;
 }
 
 .btn.primary {
     background-color: #2563eb;
-    color: #ffffff;
+    color: white;
 }
 
 .btn.outline {
-    background-color: transparent;
-    color: #2563eb;
     border: 1px solid #2563eb;
+    color: #2563eb;
+    background: transparent;
 }
 
 .btn.secondary {
     background-color: #6b7280;
-    color: #ffffff;
+    color: white;
 }
 
 .btn.small {
@@ -144,69 +105,47 @@ body {
 }
 
 .btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2);
+    transform: translateY(-2px);
 }
 
-/* Cards section */
+/* CARDS */
 .cards-section {
-    margin-bottom: 32px;
+    margin-top: 40px;
 }
 
 .section-title {
     font-size: 20px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
 }
 
 .card {
-    background-color: #ffffff;
+    background: white;
+    padding: 18px;
     border-radius: 12px;
-    padding: 16px 18px;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15);
-    font-size: 14px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
 }
 
 .card h3 {
-    font-size: 16px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .card p {
-    font-size: 13px;
+    margin-bottom: 16px;
     color: #4b5563;
-    margin-bottom: 12px;
+    font-size: 14px;
 }
 
-/* Footer */
+/* FOOTER */
 .footer {
     text-align: center;
-    font-size: 12px;
-    color: #6b7280;
-    padding: 12px 16px 18px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .hero {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-card {
-        order: -1;
-        margin-bottom: 10px;
-    }
-
-    .hero-actions {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+    padding: 14px;
+    margin-top: 40px;
+    color: #555;
+    font-size: 13px;
 }

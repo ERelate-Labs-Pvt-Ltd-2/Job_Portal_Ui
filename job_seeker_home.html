@@ -7,6 +7,8 @@
     <script defer src="job_seeker_home.js"></script>
 </head>
 <body>
+
+<!-- HEADER -->
 <header class="header">
     <div class="logo">Job Portal</div>
     <nav class="nav">
@@ -19,72 +21,44 @@
     </nav>
 </header>
 
+<!-- MAIN CONTENT -->
 <main class="main-container">
-    <!-- Hero / Welcome section -->
-    <section class="hero">
-        <div>
-            <p class="hero-subtitle" id="greeting-text">Welcome,</p>
-            <h1 class="hero-title">
-                <span id="user-name">Job Seeker</span>
-            </h1>
-            <p class="hero-desc">
-                Manage your job search from one place – search jobs, track applications,
-                and stay updated on your application status.
-            </p>
-            <div class="hero-actions">
-                <a href="search_jobs.html" class="btn primary">Search Jobs</a>
-                <a href="my_applications.html" class="btn outline">View My Applications</a>
-            </div>
-        </div>
 
-        <div class="hero-card">
-            <h3>Quick Overview</h3>
-            <ul>
-                <li><span>Jobs Saved:</span> <strong id="saved-count">0</strong></li>
-                <li><span>Applications Submitted:</span> <strong id="applied-count">0</strong></li>
-                <li><span>Interviews Scheduled:</span> <strong id="interview-count">0</strong></li>
-            </ul>
+    <!-- Greeting Section -->
+    <section class="hero">
+        <p class="hero-subtitle">Job Seeker Panel</p>
+
+        <!-- Welcome, Rahul -->
+        <h1 class="hero-title">
+            Welcome, <span id="user-name">Job Seeker</span>
+        </h1>
+
+        <p class="hero-desc">
+            Manage your job search — search jobs, track your applications, and view updates.
+        </p>
+
+        <div class="hero-actions">
+            <a href="search_jobs.html" class="btn primary">Search Jobs</a>
+            <a href="my_applications.html" class="btn outline">View My Applications</a>
         </div>
     </section>
 
-    <!-- Main actions -->
+    <!-- Action Cards -->
     <section class="cards-section">
         <h2 class="section-title">What do you want to do?</h2>
+        
         <div class="card-grid">
+
             <article class="card">
                 <h3>Search Jobs</h3>
-                <p>Browse and search for jobs that match your skills and interests.</p>
+                <p>Browse and search for jobs matching your skills.</p>
                 <a href="search_jobs.html" class="btn small">Go to Search</a>
             </article>
 
             <article class="card">
                 <h3>My Applications</h3>
-                <p>See all the jobs you have applied for and track their status.</p>
+                <p>View all the jobs you have applied for.</p>
                 <a href="my_applications.html" class="btn small">View Applications</a>
             </article>
 
-            <article class="card">
-                <h3>Application Status</h3>
-                <p>Check the detailed status of one of your applications.</p>
-                <!-- You can change applicationId later -->
-                <a href="application_status.html?applicationId=1" class="btn small">
-                    View Application Status
-                </a>
-            </article>
-
-            <article class="card">
-                <h3>Profile / Resume</h3>
-                <p>Update your personal details and resume. (Feature to be added later)</p>
-                <button class="btn small secondary" id="profile-btn">
-                    Edit Profile
-                </button>
-            </article>
-        </div>
-    </section>
-</main>
-
-<footer class="footer">
-    <p>&copy; <span id="year"></span> Job Portal. All rights reserved.</p>
-</footer>
-</body>
-</html>
+            <article c
