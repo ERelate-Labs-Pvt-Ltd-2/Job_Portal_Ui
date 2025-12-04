@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Job Seeker Home - Job Portal</title>
+    <title>Job Seeker Dashboard - Job Portal</title>
     <link rel="stylesheet" href="job_seeker_home.css">
     <script defer src="job_seeker_home.js"></script>
 </head>
@@ -28,7 +28,7 @@
                 <span id="user-name">Job Seeker</span>
             </h1>
             <p class="hero-desc">
-                Manage your job search from one place – search jobs, track applications, 
+                Manage your job search from one place – search jobs, track applications,
                 and stay updated on your application status.
             </p>
             <div class="hero-actions">
@@ -36,12 +36,13 @@
                 <a href="my_applications.html" class="btn outline">View My Applications</a>
             </div>
         </div>
+
         <div class="hero-card">
             <h3>Quick Overview</h3>
             <ul>
-                <li><span>Jobs Saved:</span> <strong id="saved-count">3</strong></li>
-                <li><span>Applications Submitted:</span> <strong id="applied-count">5</strong></li>
-                <li><span>Interviews Scheduled:</span> <strong id="interview-count">1</strong></li>
+                <li><span>Jobs Saved:</span> <strong id="saved-count">0</strong></li>
+                <li><span>Applications Submitted:</span> <strong id="applied-count">0</strong></li>
+                <li><span>Interviews Scheduled:</span> <strong id="interview-count">0</strong></li>
             </ul>
         </div>
     </section>
@@ -58,46 +59,26 @@
 
             <article class="card">
                 <h3>My Applications</h3>
-                <p>See all the jobs you have applied for and track status.</p>
+                <p>See all the jobs you have applied for and track their status.</p>
                 <a href="my_applications.html" class="btn small">View Applications</a>
             </article>
 
             <article class="card">
                 <h3>Application Status</h3>
-                <p>Track status of a specific application in detail.</p>
-                <a href="application_status.html" class="btn small disabled" data-feature="status">
-                    View Status (Coming Soon)
+                <p>Check the detailed status of one of your applications.</p>
+                <!-- You can change applicationId later -->
+                <a href="application_status.html?applicationId=1" class="btn small">
+                    View Application Status
                 </a>
             </article>
 
             <article class="card">
                 <h3>Profile / Resume</h3>
-                <p>Update your personal details and resume. (optional feature)</p>
+                <p>Update your personal details and resume. (Feature to be added later)</p>
                 <button class="btn small secondary" id="profile-btn">
-                    Edit Profile (Later)
+                    Edit Profile
                 </button>
             </article>
-        </div>
-    </section>
-
-    <!-- Recent applications (dummy static UI) -->
-    <section class="recent-section">
-        <h2 class="section-title">Recent Applications</h2>
-        <div class="table-wrapper">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Job Title</th>
-                    <th>Company</th>
-                    <th>Applied On</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody id="recent-applications">
-                <!-- Filled by JS or static rows below -->
-                </tbody>
-            </table>
         </div>
     </section>
 </main>
