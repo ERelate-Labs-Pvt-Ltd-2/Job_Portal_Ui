@@ -1,2 +1,2 @@
 - demo for mergin branches
--merge confl
+-merge conflict
