@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recruitment Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <!-- HEADER / NAVBAR -->
+  <header class="site-header">
+    <div class="container header-content">
+      <div class="logo">TalentHire</div>
+
+      <nav class="main-nav">
+        <!-- data-view attribute will be used in JS to switch sections -->
+        <a href="#" class="nav-link active" data-view="home-view">Home</a>
+        <a href="#" class="nav-link" data-view="jobs-view">Jobs</a>
+        <a href="#" class="nav-link" data-view="admin-view">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="site-main">
+    <div class="container">
+      <!-- HOME VIEW -->
+      <section id="home-view" class="view active">
+        <div class="hero">
+          <div>
+            <h1>Find your dream job</h1>
+            <p>Simple recruitment portal skeleton using HTML, CSS & JavaScript.</p>
+            <button id="browse-jobs-btn" class="btn btn-primary">
+              Browse Jobs
+            </button>
+          </div>
+        </div>
+
+        <div class="home-grid">
+          <div class="card">
+            <h2>For Candidates</h2>
+            <p>Browse jobs, view details, and apply (you will add real logic here).</p>
+          </div>
+          <div class="card">
+            <h2>For Recruiters</h2>
+            <p>Create and manage job postings from the Admin section.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- JOB LIST VIEW -->
+      <section id="jobs-view" class="view">
+        <div class="section-header">
+          <h2>Open Positions</h2>
+          <p>Search and filter jobs (filters are skeleton only for now).</p>
+        </div>
+
+        <!-- Filters (non-functional skeleton, JS TODO) -->
+        <div class="filters">
+          <label for="search-input">Search</label>
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search by job title, skills..."
+          />
+          <label for="location-filter">Location</label>
+          <select id="location-filter">
+            <option value="">All Locations</option>
+            <option value="Remote">Remote</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Mumbai">Mumbai</option>
+          </select>
+          <label for="type-filter">Job Type</label>
+          <select id="type-filter">
+            <option value="">Job Type</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Internship">Internship</option>
+          </select>
+          <!-- TODO: implement filtering logic in JS -->
+        </div>
+
+        <!-- Job cards will be injected here via JS -->
+        <div id="jobs-list" class="jobs-list">
+          <!-- JS will create .job-card elements here -->
+        </div>
+      </section>
+
+      <!-- JOB DETAIL VIEW -->
+      <section id="job-detail-view" class="view">
+        <button id="back-to-jobs" class="btn btn-secondary">&larr; Back to Jobs</button>
+
+        <div id="job-detail" class="job-detail">
+          <!-- JS will fill this container with job details -->
+          <!-- Skeleton structure: -->
+          <!--
+          <h2>Job Title</h2>
+          <p class="meta">Location • Type • Experience</p>
+          <h3>Job Description</h3>
+          <p>...</p>
+          <h3>Requirements</h3>
+          <ul>
+            <li>Requirement 1</li>
+          </ul>
+          <button class="btn btn-primary">Apply Now</button>
+          -->
+        </div>
+      </section>
+
+      <!-- ADMIN VIEW -->
+      <section id="admin-view" class="view">
+        <div class="section-header">
+          <h2>Admin Panel</h2>
+          <p>Create new job postings (you can later connect this to a backend).</p>
+        </div>
+
+        <form id="job-form" class="card form-card">
+          <div class="form-group">
+            <label for="job-title">Job Title</label>
+            <input type="text" id="job-title" required />
+          </div>
+
+          <div class="form-group">
+            <label for="job-location">Location</label>
+            <input type="text" id="job-location" />
+          </div>
+
+          <div class="form-group">
+            <label for="job-type">Job Type</label>
+            <select id="job-type">
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Internship">Internship</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="job-experience">Experience</label>
+            <input type="text" id="job-experience" placeholder="e.g. 0-2 years" />
+          </div>
+
+          <div class="form-group">
+            <label for="job-description">Description</label>
+            <textarea id="job-description" rows="4"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="job-requirements">Requirements (comma separated)</label>
+            <textarea id="job-requirements" rows="3"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Save Job</button>
+        </form>
+
+        <div class="card">
+          <h3>Existing Jobs (Skeleton)</h3>
+          <ul id="admin-jobs-list" class="admin-jobs-list">
+            <!-- JS will list jobs here for admin -->
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="year"></span> TalentHire Recruitment Portal. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- JS FILES -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
