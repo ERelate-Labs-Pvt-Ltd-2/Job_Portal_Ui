@@ -99,11 +99,8 @@ details summary {
     margin-bottom: 2px;
 }
 
-/* Filters spacing */
+/* Filters labels */
 .search-panel label {
     font-size: 13px;
     font-weight: 600;
-}
-.btn-group .btn {
-    padding: 8px 14px;
 }

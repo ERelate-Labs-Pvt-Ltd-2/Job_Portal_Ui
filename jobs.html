@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recruiter Jobs</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+        <span class="navbar-brand mb-0 h1">JobPortal – Recruiter</span>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <!-- Header -->
+    <div class="mb-3">
+        <h3 class="fw-bold">🕒 Recently Posted Jobs (By You)</h3>
+        <p class="text-muted">Manage and track jobs you have posted.</p>
+    </div>
+
+    <!-- Search & Filters Panel (UI only) -->
+    <form class="search-panel mb-4" onsubmit="event.preventDefault();">
+
+        <div class="row g-3 align-items-center">
+            <div class="col-lg-6">
+                <label class="form-label mb-1">Search Jobs</label>
+                <input type="text"
+                       class="form-control"
+                       placeholder="Job title, skill, company (e.g. Java Developer)">
+            </div>
+
+            <div class="col-lg-4">
+                <label class="form-label mb-1">Location</label>
+                <input type="text"
+                       class="form-control"
+                       placeholder="All Locations">
+            </div>
+
+            <div class="col-lg-2 d-grid">
+                <label class="form-label mb-1">&nbsp;</label>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="clearFilters();">Clear</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mt-3">
+            <div class="col-lg-6">
+                <label class="form-label mb-1">Job Type:</label><br>
+                <div class="d-flex flex-wrap gap-3">
+                    <label><input type="radio" name="job_type" checked> All</label>
+                    <label><input type="radio" name="job_type"> Full-time</label>
+                    <label><input type="radio" name="job_type"> Part-time</label>
+                    <label><input type="radio" name="job_type"> Internship</label>
+                    <label><input type="radio" name="job_type"> Remote</label>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <label class="form-label mb-1">Experience:</label><br>
+                <div class="d-flex flex-wrap gap-3">
+                    <label><input type="radio" name="exp" checked> Any</label>
+                    <label><input type="radio" name="exp"> 0–1 yrs</label>
+                    <label><input type="radio" name="exp"> 1–3 yrs</label>
+                    <label><input type="radio" name="exp"> 3+ yrs</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-3 text-muted small">
+            Showing 2 job(s)
+        </div>
+    </form>
+
+    <!-- Create Job Button -->
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-success"
+                data-bs-toggle="modal"
+                data-bs-target="#createJobModal">
+            + Create Job
+        </button>
+    </div>
+
+    <!-- ===================== SAMPLE JOB CARD 1 ===================== -->
+    <div class="job-card mb-3">
+
+        <div class="d-flex justify-content-between">
+            <div>
+                <p class="label-title">👨‍💼 Position</p>
+                <h5 class="fw-bold mb-1">Junior Python Developer</h5>
+
+                <p class="company-line mb-1">
+                    <span class="company-name">TCS</span> •
+                    <span class="text-muted">Pune, India</span> •
+                    <span class="text-muted">Exp: 1–3 yrs</span> •
+                    <span class="text-muted">Posted: 2 days ago</span>
+                </p>
+
+                <span class="tag mt-1">Full Time</span>
+            </div>
+
+            <div class="text-end">
+                <p class="salary-text">₹5 LPA</p>
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <span class="skill-pill">Python</span>
+            <span class="skill-pill">Flask</span>
+            <span class="skill-pill">MySQL</span>
+            <span class="skill-pill">Git</span>
+        </div>
+
+        <details class="mt-3">
+            <summary>🔍 View Details</summary>
+            <div class="details-box">
+                <p class="section-title">📄 Description</p>
+                <p>Work on backend APIs, integrate with frontend, and maintain existing codebase.</p>
+
+                <p class="section-title">🧩 Responsibilities</p>
+                <p>Write clean code, fix bugs, participate in code reviews, and collaborate with team.</p>
+
+                <p class="section-title">🎓 Qualifications</p>
+                <p>BE / BTech in CS/IT or related field. Good understanding of OOPs and SQL.</p>
+            </div>
+        </details>
+
+        <div class="d-flex gap-2 mt-3">
+            <button type="button" class="btn btn-warning btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editJobModal1">
+                ✏️ Edit
+            </button>
+
+            <button type="button"
+                    class="btn btn-danger btn-sm"
+                    onclick="showToast('Job deleted (demo only)', 'danger');">
+                🗑 Delete
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Edit Job Modal - Job 1 -->
+    <div class="modal fade" id="editJobModal1" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">✏️ Edit Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <label class="form-label">Job Title</label>
+                    <input type="text" class="form-control" value="Junior Python Developer">
+
+                    <label class="form-label mt-3">Company</label>
+                    <input type="text" class="form-control" value="TCS">
+
+                    <label class="form-label mt-3">Location</label>
+                    <input type="text" class="form-control" value="Pune, India">
+
+                    <label class="form-label mt-3">Salary</label>
+                    <input type="text" class="form-control" value="₹5 LPA">
+
+                    <label class="form-label mt-3">Experience</label>
+                    <input type="text" class="form-control" value="1–3 yrs">
+
+                    <label class="form-label mt-3">Job Type</label>
+                    <select class="form-control">
+                        <option selected>Full Time</option>
+                        <option>Part Time</option>
+                        <option>Internship</option>
+                        <option>Remote</option>
+                    </select>
+
+                    <label class="form-label mt-3">Skills</label>
+                    <input type="text" class="form-control" value="Python, Flask, MySQL, Git">
+
+                    <label class="form-label mt-3">Description</label>
+                    <textarea class="form-control">Work on backend APIs, integrate with frontend, and maintain existing codebase.</textarea>
+
+                    <label class="form-label mt-3">Responsibilities</label>
+                    <textarea class="form-control">Write clean code, fix bugs, participate in code reviews, and collaborate with team.</textarea>
+
+                    <label class="form-label mt-3">Qualifications</label>
+                    <textarea class="form-control">BE / BTech in CS/IT or related field. Good understanding of OOPs and SQL.</textarea>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-primary w-100"
+                            onclick="onEditSave(this)"
+                            data-bs-dismiss="modal">
+                        💾 Save Changes
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SAMPLE JOB CARD 2 ===================== -->
+    <div class="job-card mb-3">
+
+        <div class="d-flex justify-content-between">
+            <div>
+                <p class="label-title">👨‍💼 Position</p>
+                <h5 class="fw-bold mb-1">Frontend Developer (React)</h5>
+
+                <p class="company-line mb-1">
+                    <span class="company-name">Infosys</span> •
+                    <span class="text-muted">Bangalore, India</span> •
+                    <span class="text-muted">Exp: 0–1 yrs</span> •
+                    <span class="text-muted">Posted: Today</span>
+                </p>
+
+                <span class="tag mt-1">Internship</span>
+            </div>
+
+            <div class="text-end">
+                <p class="salary-text">₹20k / month</p>
+            </div>
+        </div>
+
+        <div class="mt-2">
+            <span class="skill-pill">HTML</span>
+            <span class="skill-pill">CSS</span>
+            <span class="skill-pill">JavaScript</span>
+            <span class="skill-pill">React</span>
+        </div>
+
+        <details class="mt-3">
+            <summary>🔍 View Details</summary>
+            <div class="details-box">
+                <p class="section-title">📄 Description</p>
+                <p>Build responsive user interfaces and work closely with backend engineers.</p>
+
+                <p class="section-title">🧩 Responsibilities</p>
+                <p>Implement web components, fix UI bugs, and ensure cross-browser support.</p>
+
+                <p class="section-title">🎓 Qualifications</p>
+                <p>Any graduate with strong frontend skills. Good understanding of React basics.</p>
+            </div>
+        </details>
+
+        <div class="d-flex gap-2 mt-3">
+            <button type="button" class="btn btn-warning btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editJobModal2">
+                ✏️ Edit
+            </button>
+
+            <button type="button"
+                    class="btn btn-danger btn-sm"
+                    onclick="showToast('Job deleted (demo only)', 'danger');">
+                🗑 Delete
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Edit Job Modal - Job 2 -->
+    <div class="modal fade" id="editJobModal2" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">✏️ Edit Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <label class="form-label">Job Title</label>
+                    <input type="text" class="form-control" value="Frontend Developer (React)">
+
+                    <label class="form-label mt-3">Company</label>
+                    <input type="text" class="form-control" value="Infosys">
+
+                    <label class="form-label mt-3">Location</label>
+                    <input type="text" class="form-control" value="Bangalore, India">
+
+                    <label class="form-label mt-3">Salary</label>
+                    <input type="text" class="form-control" value="₹20k / month">
+
+                    <label class="form-label mt-3">Experience</label>
+                    <input type="text" class="form-control" value="0–1 yrs">
+
+                    <label class="form-label mt-3">Job Type</label>
+                    <select class="form-control">
+                        <option>Full Time</option>
+                        <option>Part Time</option>
+                        <option selected>Internship</option>
+                        <option>Remote</option>
+                    </select>
+
+                    <label class="form-label mt-3">Skills</label>
+                    <input type="text" class="form-control" value="HTML, CSS, JavaScript, React">
+
+                    <label class="form-label mt-3">Description</label>
+                    <textarea class="form-control">Build responsive user interfaces and work closely with backend engineers.</textarea>
+
+                    <label class="form-label mt-3">Responsibilities</label>
+                    <textarea class="form-control">Implement web components, fix UI bugs, and ensure cross-browser support.</textarea>
+
+                    <label class="form-label mt-3">Qualifications</label>
+                    <textarea class="form-control">Any graduate with strong frontend skills. Good understanding of React basics.</textarea>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-primary w-100"
+                            onclick="onEditSave(this)"
+                            data-bs-dismiss="modal">
+                        💾 Save Changes
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div> <!-- /container -->
+
+<!-- Create Job Modal (UI only, no real save) -->
+<div class="modal fade" id="createJobModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">🚀 Create New Job</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <label class="form-label">Job Title</label>
+                <input type="text" class="form-control">
+
+                <label class="form-label mt-3">Company</label>
+                <input type="text" class="form-control">
+
+                <label class="form-label mt-3">Location</label>
+                <input type="text" class="form-control">
+
+                <label class="form-label mt-3">Salary</label>
+                <input type="text" class="form-control">
+
+                <label class="form-label mt-3">Experience</label>
+                <input type="text" class="form-control">
+
+                <label class="form-label mt-3">Job Type</label>
+                <select class="form-control">
+                    <option>Full Time</option>
+                    <option>Part Time</option>
+                    <option>Internship</option>
+                    <option>Remote</option>
+                </select>
+
+                <label class="form-label mt-3">Skills</label>
+                <input type="text" class="form-control">
+
+                <label class="form-label mt-3">Description</label>
+                <textarea class="form-control"></textarea>
+
+                <label class="form-label mt-3">Responsibilities</label>
+                <textarea class="form-control"></textarea>
+
+                <label class="form-label mt-3">Qualifications</label>
+                <textarea class="form-control"></textarea>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-success w-100"
+                        onclick="onCreateJob()"
+                        data-bs-dismiss="modal">
+                    💾 Create Job
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 2000;">
+    <div id="mainToast" class="toast text-bg-success border-0" role="alert"
+         aria-live="assertive" aria-atomic="true" data-bs-delay="2500">
+        <div class="d-flex">
+            <div class="toast-body fw-semibold" id="toastMessage">
+                <!-- message set by JS -->
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function showToast(message, type) {
+        const toastEl = document.getElementById('mainToast');
+        const msgEl = document.getElementById('toastMessage');
+
+        msgEl.textContent = message;
+
+        // Reset bg color
+        toastEl.classList.remove('text-bg-success', 'text-bg-primary', 'text-bg-danger');
+        if (type === 'danger') {
+            toastEl.classList.add('text-bg-danger');
+        } else if (type === 'info') {
+            toastEl.classList.add('text-bg-primary');
+        } else {
+            toastEl.classList.add('text-bg-success');
+        }
+
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    }
+
+    function onCreateJob() {
+        showToast('Job created (UI demo only)', 'success');
+    }
+
+    function onEditSave(btn) {
+        showToast('Job updated (UI demo only)', 'info');
+    }
+
+    function clearFilters() {
+        showToast('Filters cleared (UI only)', 'info');
+    }
+</script>
+
+</body>
+</html>
+
