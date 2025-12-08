@@ -46,13 +46,13 @@
             </div>
 
             <div class="col-lg-2 d-grid">
-    <label class="form-label mb-1">&nbsp;</label>
-    <div class="btn-group">
-        <button type="submit" class="btn btn-primary">Search</button>
-        <a href="/" class="btn btn-outline-secondary">Clear</a>
-    </div>
-</div>
-
+                <label class="form-label mb-1">&nbsp;</label>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <a href="/" class="btn btn-outline-secondary">Clear</a>
+                </div>
+            </div>
+        </div>
 
         <div class="row g-3 mt-3">
             <div class="col-lg-6">
@@ -82,11 +82,13 @@
         <div class="mt-3 text-muted small">
             Showing {{ total }} job(s)
         </div>
-    </form>
+    </form> <!-- 🔥 FORM CLOSED HERE -->
 
-    <!-- Create Job button (top-right under filters) -->
+    <!-- ⭐ Create Job button — Now OUTSIDE the form -->
     <div class="d-flex justify-content-end mb-3">
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createJobModal">
+        <button type="button" class="btn btn-success"
+                data-bs-toggle="modal"
+                data-bs-target="#createJobModal">
             + Create Job
         </button>
     </div>
@@ -97,11 +99,9 @@
 
         <div class="d-flex justify-content-between">
             <div>
-                <!-- Position -->
                 <p class="label-title">👨‍💼 Position</p>
                 <h5 class="fw-bold mb-1">{{ job.title }}</h5>
 
-                <!-- Company & meta -->
                 <p class="company-line mb-1">
                     <span class="company-name">{{ job.company }}</span> •
                     <span class="text-muted">{{ job.location }}</span> •
@@ -109,7 +109,6 @@
                     <span class="text-muted">Posted: {{ job.posted_ago }}</span>
                 </p>
 
-                <!-- Job type tag -->
                 <span class="tag mt-1">{{ job.job_type }}</span>
             </div>
 
@@ -118,7 +117,6 @@
             </div>
         </div>
 
-        <!-- Skills -->
         <div class="mt-2">
             {% if job.skills %}
                 {% for skill in job.skills.split(',') %}
@@ -129,7 +127,6 @@
             {% endif %}
         </div>
 
-        <!-- View Details (expand on same card) -->
         <details class="mt-3">
             <summary>🔍 View Details</summary>
             <div class="details-box">
@@ -144,9 +141,9 @@
             </div>
         </details>
 
-        <!-- Action buttons -->
         <div class="d-flex gap-2 mt-3">
-            <button class="btn btn-warning btn-sm"
+            <button type="button"
+                    class="btn btn-warning btn-sm"
                     data-bs-toggle="modal"
                     data-bs-target="#editJobModal{{ job.id }}">
                 ✏️ Edit
