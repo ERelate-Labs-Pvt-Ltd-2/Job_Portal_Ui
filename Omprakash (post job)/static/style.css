@@ -1,0 +1,109 @@
+body {
+    background: #f4f6f9;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.navbar {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Search / Filter panel */
+.search-panel {
+    background: #ffffff;
+    padding: 16px 18px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Job cards */
+.job-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+
+.label-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: #6c7a90;
+    margin-bottom: 2px;
+}
+
+.company-line {
+    font-size: 13px;
+}
+
+.company-name {
+    font-weight: 600;
+    color: #2f3b52;
+}
+
+.salary-text {
+    font-weight: 700;
+    color: #198754;
+    font-size: 16px;
+}
+
+/* Job type chip */
+.tag {
+    display: inline-block;
+    margin-top: 4px;
+    background: #0d6efd;
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* Skills pills */
+.skill-pill {
+    display: inline-block;
+    background: #e8f1ff;
+    color: #2050b8;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+}
+
+/* Details block */
+details summary {
+    cursor: pointer;
+    background: #eef3ff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid #d2dcff;
+    width: fit-content;
+}
+
+.details-box {
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #f5f7ff;
+    border-left: 4px solid #3867ff;
+}
+
+.details-box p {
+    word-wrap: break-word;
+}
+
+.section-title {
+    font-weight: 600;
+    margin-top: 6px;
+    margin-bottom: 2px;
+}
+
+/* Filters spacing */
+.search-panel label {
+    font-size: 13px;
+    font-weight: 600;
+}
+.btn-group .btn {
+    padding: 8px 14px;
+}
