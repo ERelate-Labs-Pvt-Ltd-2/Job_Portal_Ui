@@ -1,0 +1,38 @@
+:root{
+  --bg:#eef3ff;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent:#2563eb;
+  --shadow:0 8px 22px rgba(0,0,0,0.08);
+  --radius:14px;
+  font-family: Inter, sans-serif;
+}
+body{margin:0;padding:0;background:var(--bg);color:#0f172a;transition:0.3s;}
+.container{max-width:1100px;margin:30px auto;padding:20px;}
+.card{background:var(--card);padding:20px;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:20px;transition:0.3s;}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:12px;}
+h1{margin:0;font-size:22px;font-weight:700;}
+select,input{padding:8px 12px;border-radius:10px;border:1px solid #d1d5db;font-size:14px;background:#fff;}
+.filters{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;align-items:center;justify-content:flex-end;}
+table{width:100%;border-collapse:collapse;margin-top:12px;}
+thead{background:#f3f4f6;}
+thead th{text-align:left;padding:12px;font-size:13px;color:var(--muted);}    
+tbody tr{background:#fff;cursor:pointer;transition:0.2s;border-left:5px solid var(--accent);}    
+tbody tr:hover{background:#e0f2fe;transform:translateY(-2px);box-shadow:0 6px 14px rgba(37,99,235,0.15);}    
+td{padding:14px 12px;border-bottom:1px solid #f1f1f1;font-size:14px;}
+.badge{padding:4px 10px;border-radius:20px;font-size:12px;color:#fff;font-weight:600;}    
+.submitted{background:#3b82f6;} 
+.under-review{background:#f59e0b;} 
+.shortlisted{background:#8b5cf6;} 
+.offered{background:#10b981;} 
+.rejected{background:#ef4444;} 
+.selected{background:#10b981;} 
+.interview{background:#6366f1;} 
+.hold{background:#475569;} 
+.download-btn{padding:6px 12px;background:#2563eb;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;transition:0.2s;}
+.download-btn:hover{background:#1e40af;}
+.search-icon{position:relative;}
+.search-icon input{padding-left:28px;}
+.search-icon::before{content:'🔍';position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:14px;}
+@media(max-width:700px){table{display:none;}}
+footer{background:#2563eb;color:white;padding:20px;text-align:center;border-radius:14px;margin-top:30px;font-family:Inter, sans-serif;}

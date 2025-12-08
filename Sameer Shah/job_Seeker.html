@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Application List - Job Seeker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container">
+  <div class="card">
+    <div class="row">
+      <h1>Application List</h1>
+
+      <div class="filters">
+        <select id="statusFilter">
+          <option value="all">All Status</option>
+          <option value="submitted">Submitted</option>
+          <option value="under-review">Under Review</option>
+          <option value="shortlisted">Shortlisted</option>
+          <option value="offered">Offered</option>
+          <option value="rejected">Rejected</option>
+        </select>
+
+        <select id="stateFilter">
+          <option value="all">All States</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Bangalore">Bangalore</option>
+          <option value="Chennai">Chennai</option>
+          <option value="Kolkata">Kolkata</option>
+        </select>
+
+        <div class="search-icon">
+          <input id="searchBox" type="text" placeholder="Search name/job...">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <table id="seekerTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Job Title</th>
+          <th>Company</th>
+          <th>Applied</th>
+          <th>Status</th>
+          <th>State</th>
+        </tr>
+      </thead>
+      <tbody id="seekerBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Job Portal. All Rights Reserved.</p>
+  <p>Designed with ❤️ by Team JobPortal</p>
+</footer>
+
+<script src="seeker.js"></script>
+</body>
+</html>
