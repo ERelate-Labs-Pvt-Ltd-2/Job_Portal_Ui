@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import pymysql
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = "super_secret_key"  # Required for toast flash messages
 
 # Database connection
 db = pymysql.connect(
@@ -11,7 +12,6 @@ db = pymysql.connect(
     password="",
     database="jobportal"
 )
-
 
 # ---------------- HOME / JOB LIST WITH FILTERS ----------------
 @app.route("/")
@@ -40,17 +40,15 @@ def home():
         params.append(job_type)
 
     if exp != "any":
-        # experience is stored as text, we just match substring
         query += " AND experience LIKE %s"
         params.append(f"%{exp}%")
 
     query += " ORDER BY created_at DESC"
-
     cursor.execute(query, params)
     jobs = cursor.fetchall()
     cursor.close()
 
-    # Compute "posted X days ago"
+    # Posted Ago Time Convert
     now = datetime.now()
     for job in jobs:
         created = job.get("created_at")
@@ -75,7 +73,6 @@ def home():
         total=len(jobs)
     )
 
-
 # ---------------- CREATE JOB ----------------
 @app.route("/submit-job", methods=["POST"])
 def submit_job():
@@ -93,21 +90,19 @@ def submit_job():
     )
 
     cursor = db.cursor()
-    cursor.execute(
-        """
+    cursor.execute("""
         INSERT INTO jobs 
         (title, company, location, salary, experience, job_type, skills, description, responsibilities, qualifications)
         VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-        """,
-        data,
-    )
+    """,
+    data)
     db.commit()
     cursor.close()
 
+    flash("Job Created Successfully!", "success")
     return redirect(url_for("home"))
 
-
-# ---------------- UPDATE JOB (FROM EDIT MODAL) ----------------
+# ---------------- UPDATE JOB ----------------
 @app.route("/update-job/<int:id>", methods=["POST"])
 def update_job(id):
     data = (
@@ -125,21 +120,19 @@ def update_job(id):
     )
 
     cursor = db.cursor()
-    cursor.execute(
-        """
-        UPDATE jobs SET
+    cursor.execute("""
+        UPDATE jobs SET 
         title=%s, company=%s, location=%s, salary=%s,
         experience=%s, job_type=%s, skills=%s,
         description=%s, responsibilities=%s, qualifications=%s
         WHERE id=%s
-        """,
-        data,
-    )
+    """,
+    data)
     db.commit()
     cursor.close()
 
+    flash("Job Updated Successfully!", "info")
     return redirect(url_for("home"))
-
 
 # ---------------- DELETE JOB ----------------
 @app.route("/delete-job/<int:id>")
@@ -148,8 +141,9 @@ def delete_job(id):
     cursor.execute("DELETE FROM jobs WHERE id=%s", (id,))
     db.commit()
     cursor.close()
-    return redirect(url_for("home"))
 
+    flash("Job Deleted Successfully!", "danger")
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run(debug=True)
