@@ -1,0 +1,109 @@
+/* General Page Style */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+}
+
+/* Header */
+header {
+    background: #007bff;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    color: white;
+    margin: 0;
+    font-size: 28px;
+}
+
+/* Center Container */
+.container {
+    width: 380px;
+    margin: 30px auto;
+    position: relative;
+}
+
+/* Hide Checkbox */
+#toggle-form {
+    display: none;
+}
+
+/* Form Box design */
+.form-box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: absolute;
+    width: 100%;
+    transition: 0.5s ease;
+}
+
+/* LOGIN DEFAULT - visible */
+.login-box {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* REGISTER - hidden by default (slide right) */
+.register-box {
+    opacity: 0;
+    transform: translateX(420px);
+}
+
+/* When checkbox is checked → show Register */
+#toggle-form:checked ~ .login-box {
+    opacity: 0;
+    transform: translateX(-420px);
+}
+
+/* Show Register */
+#toggle-form:checked ~ .register-box {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Inputs */
+.form-box label {
+    font-weight: bold;
+}
+
+.form-box input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Switch Link */
+.switch {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.switch-link {
+    color: #007bff;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: underline;
+}

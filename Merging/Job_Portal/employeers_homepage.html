@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Recruiter Dashboard — Demo</title>
+ <link rel="stylesheet" href="css/employeers_homepage.css">
+</head>
+<body>
+  <div class="container" role="application" aria-label="Recruiter dashboard">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Sidebar navigation">
+      <div class="brand" aria-hidden="false">
+        <div class="logo">RH</div>
+        <div>
+          <h1>HireDemo</h1>
+          <div class="muted small">Recruiter portal</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#" class="active" aria-current="page">Dashboard</a>
+        <a href="view_application_of_job_post .html">Jobs</a>
+        <a href="search_candidate_resume.html">Candidates</a>
+        <a href="#">Messages</a>
+        <a href="#">Settings</a>
+      </nav>
+
+      <div class="small">Company</div>
+      <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
+        <div style="width:44px;height:44px;border-radius:8px;background:#fde68a;display:grid;place-items:center;">LD</div>
+        <div>
+          <div style="font-weight:700">LifeDrops Inc.</div>
+          <div class="muted" style="font-size:12px">San Francisco • 12 employees</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <!-- Topbar -->
+      <div class="topbar">
+        <div style="display:flex;gap:12px;flex:1">
+          <div class="search" role="search" aria-label="Search candidates or jobs">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden=true>
+              <path d="M21 21l-4.35-4.35" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="11" cy="11" r="5" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input id="globalSearch" placeholder="Search candidates, jobs, skills..." aria-label="Search" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-ghost" title="Notifications" aria-label="Notifications">
+            🔔
+          </button>
+         <button class="btn btn-primary" onclick="window.location.href='post_jobs.html'">+ Post Job</button>
+
+
+          <div class="avatar" title="Profile">R</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid">
+        <div class="card stat" aria-hidden="false">
+          <div class="muted small">Open jobs</div>
+          <div class="num">8</div>
+          <div class="muted" style="font-size:13px">2 new this week</div>
+        </div>
+
+        <div class="card stat">
+          <div class="muted small">Applicants</div>
+          <div class="num">452</div>
+          <div class="muted" style="font-size:13px">45 new</div>
+        </div>
+
+        <div class="card stat">
+          <div class="muted small">Interviews</div>
+          <div class="num">17</div>
+          <div class="muted" style="font-size:13px">3 scheduled today</div>
+        </div>
+      </div>
+
+      <!-- Main section: jobs list + right panel -->
+      <section class="section" aria-labelledby="jobs-heading">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <h2 id="jobs-heading" style="margin:0">Active Jobs</h2>
+            <div style="display:flex;gap:10px;align-items:center">
+              <select id="filterRole" aria-label="Filter by role">
+                <option value="">All roles</option>
+                <option>Frontend</option>
+                <option>Backend</option>
+                <option>Fullstack</option>
+                <option>Data Scientist</option>
+              </select>
+              <button class="btn btn-ghost" id="exportBtn">Export</button>
+            </div>
+          </div>
+
+          <div class="jobs-list" id="jobsList">
+            <!-- Job item -->
+            <article class="job" data-role="Frontend">
+              <div class="meta">
+                <div class="company-avatar">LD</div>
+                <div>
+                  <h3>Frontend Developer</h3>
+                  <p class="muted">Remote • 3-5 yrs • ₹4.5L - ₹8L</p>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn" onclick="editJob(this)">Edit</button>
+                <button class="btn" onclick="openApplicants(this)">Applicants <span class="pill muted" style="margin-left:6px">24</span></button>
+              </div>
+            </article>
+
+            <article class="job" data-role="Backend">
+              <div class="meta">
+                <div class="company-avatar">LD</div>
+                <div>
+                  <h3>Backend (Node/Express)</h3>
+                  <p class="muted">On-site • 4+ yrs • ₹6L - ₹10L</p>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn" onclick="editJob(this)">Edit</button>
+                <button class="btn" onclick="openApplicants(this)">Applicants <span class="pill muted" style="margin-left:6px">38</span></button>
+              </div>
+            </article>
+
+            <article class="job" data-role="Data Scientist">
+              <div class="meta">
+                <div class="company-avatar">LD</div>
+                <div>
+                  <h3>Data Scientist — ML Ops</h3>
+                  <p class="muted">Hybrid • 5+ yrs • ₹12L+</p>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn" onclick="editJob(this)">Edit</button>
+                <button class="btn" onclick="openApplicants(this)">Applicants <span class="pill muted" style="margin-left:6px">11</span></button>
+              </div>
+            </article>
+          </div>
+
+          <!-- Candidates table -->
+          <div style="margin-top:20px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <h3 style="margin:0">Recent Applicants</h3>
+              <div style="font-size:13px;color:var(--muted)">Showing latest 10</div>
+            </div>
+
+            <div class="card" style="padding:0;overflow:auto">
+              <table aria-label="Recent applicants table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Applied For</th>
+                    <th>Experience</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="candidatesTbody">
+                  <tr>
+                    <td><div class="name">Aarti Desai</div><div class="muted" style="font-size:12px">aarti.desai@gmail.com</div></td>
+                    <td>Frontend Developer</td>
+                    <td>3 yrs</td>
+                    <td>Pune</td>
+                    <td><span class="pill">Phone Screen</span></td>
+                    <td><button class="btn" onclick="viewCandidate(this)" data-candidate='{"name":"Aarti Desai","email":"aarti.desai@gmail.com","skills":["React","JavaScript","CSS"],"exp":"3 yrs","bio":"Frontend engineer with strong UI/UX skills."}'>View</button></td>
+                  </tr>
+                  <tr>
+                    <td><div class="name">Rahul Suryawanshi</div><div class="muted" style="font-size:12px">rahul@example.com</div></td>
+                    <td>Backend (Node)</td>
+                    <td>2 yrs</td>
+                    <td>Nashik</td>
+                    <td><span class="pill" style="background:rgba(16,185,129,0.08);color:var(--success)">Shortlisted</span></td>
+                    <td><button class="btn" onclick="viewCandidate(this)" data-candidate='{"name":"Rahul Suryawanshi","email":"rahul@example.com","skills":["Node.js","Firebase","Dart"],"exp":"2 yrs","bio":"Backend engineer building APIs."}'>View</button></td>
+                  </tr>
+                  <tr>
+                    <td><div class="name">Sneha Patil</div><div class="muted" style="font-size:12px">sneha@example.com</div></td>
+                    <td>Data Scientist</td>
+                    <td>4 yrs</td>
+                    <td>Mumbai</td>
+                    <td><span class="pill" style="background:rgba(255,234,0,0.08);color:#b45309">Assessment</span></td>
+                    <td><button class="btn" onclick="viewCandidate(this)" data-candidate='{"name":"Sneha Patil","email":"sneha@example.com","skills":["Python","ML","Pandas"],"exp":"4 yrs","bio":"ML Engineering & research."}'>View</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <aside class="panel">
+          <div class="card form" aria-labelledby="post-job-title">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <h3 id="post-job-title" style="margin:0">Quick Post</h3>
+                <div class="muted small">Add a job in < 1 min</div>
+              </div>
+              <div class="muted">Draft autosave on</div>
+            </div>
+
+            <form id="postJobForm" onsubmit="submitJob(event)" style="margin-top:12px">
+              <label for="title">Job title</label>
+              <input id="title" required placeholder="e.g. Frontend Developer (React)" />
+
+              <label for="role" style="margin-top:8px">Role</label>
+              <select id="role">
+                <option>Frontend</option>
+                <option>Backend</option>
+                <option>Fullstack</option>
+                <option>Data Scientist</option>
+              </select>
+
+              <div class="row" style="margin-top:8px">
+                <div class="col">
+                  <label for="exp">Experience</label>
+                  <input id="exp" placeholder="e.g. 2-4 yrs" />
+                </div>
+                <div class="col">
+                  <label for="location">Location</label>
+                  <input id="location" placeholder="Remote / City" />
+                </div>
+              </div>
+
+              <label for="desc" style="margin-top:8px">Short description</label>
+              <textarea id="desc" rows="4" placeholder="A short summary for the listing"></textarea>
+
+              <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
+                <button type="button" class="btn" onclick="clearForm()">Clear</button>
+                <button class="btn btn-primary" type="submit">Publish job</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card" style="margin-top:14px">
+            <h4 style="margin:0 0 8px 0">Tips</h4>
+            <ul style="margin:0;padding-left:18px;color:var(--muted)">
+              <li>Use 3–5 bullet points in job description.</li>
+              <li>Include salary range — helps improve applicant quality.</li>
+              <li>Shortlist in batches to keep interviews focused.</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <!-- Candidate modal -->
+  <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="candidateName">
+    <div class="modal" role="document">
+      <div class="head">
+        <div>
+          <h3 id="candidateName" style="margin:0">Candidate name</h3>
+          <div id="candidateEmail" class="muted small">email@example.com</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn" onclick="closeModal()">Close</button>
+          <button class="btn btn-primary" id="scheduleBtn">Schedule interview</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:14px;margin-top:12px">
+        <div style="flex:1">
+          <h4 style="margin:0 0 6px 0">Summary</h4>
+          <p id="candidateBio" class="muted" style="margin-top:6px"></p>
+        </div>
+
+        <div style="width:220px">
+          <h4 style="margin:0 0 6px 0">Skills</h4>
+          <div id="candidateSkills" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Basic interactivity: open post job form, submit, view candidate modal, filters ---
+    const openPostJobBtn = document.getElementById('openPostJobBtn');
+    const postJobForm = document.getElementById('postJobForm');
+    const jobsList = document.getElementById('jobsList');
+    const filterRole = document.getElementById('filterRole');
+    const globalSearch = document.getElementById('globalSearch');
+    const modal = document.getElementById('modal');
+
+    openPostJobBtn.addEventListener('click', () => {
+      // scroll right panel into view and focus title
+      document.getElementById('title').focus();
+      window.scrollTo({ top: document.getElementById('post-job-title').offsetTop - 20, behavior: 'smooth' });
+    });
+
+    function submitJob(e){
+      e.preventDefault();
+      const title = document.getElementById('title').value.trim();
+      const role = document.getElementById('role').value;
+      const exp = document.getElementById('exp').value || 'Not specified';
+      const location = document.getElementById('location').value || 'Remote';
+      if(!title) return alert('Please enter a job title');
+
+      const jobEl = document.createElement('article');
+      jobEl.className='job';
+      jobEl.dataset.role=role;
+      jobEl.innerHTML = `
+        <div class="meta">
+          <div class="company-avatar">LD</div>
+          <div>
+            <h3>${escapeHtml(title)}</h3>
+            <p class="muted">${escapeHtml(location)} • ${escapeHtml(exp)}</p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="editJob(this)">Edit</button>
+          <button class="btn" onclick="openApplicants(this)">Applicants <span class="pill muted" style="margin-left:6px">0</span></button>
+        </div>
+      `;
+      jobsList.prepend(jobEl);
+      postJobForm.reset();
+      alert('Job posted (demo).');
+    }
+
+    // Simple escape
+    function escapeHtml(s){
+      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c]));
+    }
+
+    function editJob(btn){
+      const job = btn.closest('.job');
+      const title = job.querySelector('h3').innerText;
+      const role = job.dataset.role || '';
+      document.getElementById('title').value = title;
+      document.getElementById('role').value = role;
+      document.getElementById('desc').focus();
+      window.scrollTo({ top: document.getElementById('post-job-title').offsetTop - 20, behavior: 'smooth' });
+    }
+
+    function openApplicants(btn){
+      alert('Open applicants list — demo placeholder.');
+    }
+
+    // Candidate modal
+    function viewCandidate(btn){
+      const data = JSON.parse(btn.getAttribute('data-candidate') || '{}');
+      document.getElementById('candidateName').innerText = data.name || 'Unknown';
+      document.getElementById('candidateEmail').innerText = data.email || '';
+      document.getElementById('candidateBio').innerText = data.bio || '';
+      const skills = document.getElementById('candidateSkills');
+      skills.innerHTML = '';
+      (data.skills || []).forEach(s => {
+        const sp = document.createElement('span');
+        sp.className='pill';
+        sp.style.background='rgba(37,99,235,0.06)';
+        sp.style.color='var(--accent)';
+        sp.innerText = s;
+        skills.appendChild(sp);
+      });
+      modal.style.display='grid';
+      modal.querySelector('.modal').classList.add('show');
+    }
+    function closeModal(){
+      modal.style.display='none';
+      modal.querySelector('.modal').classList.remove('show');
+    }
+    modal.addEventListener('click', (e)=>{
+      if(e.target === modal) closeModal();
+    });
+
+    // Filter roles
+    filterRole.addEventListener('change', () => {
+      const role = filterRole.value;
+      document.querySelectorAll('#jobsList .job').forEach(job => {
+        job.style.display = (role === '' || job.dataset.role === role) ? '' : 'none';
+      });
+    });
+
+    // Search both jobs and candidates (basic)
+    globalSearch.addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      // Jobs
+      document.querySelectorAll('#jobsList .job').forEach(job => {
+        const text = job.innerText.toLowerCase();
+        job.style.display = text.includes(q) ? '' : 'none';
+      });
+      // Candidates table
+      document.querySelectorAll('#candidatesTbody tr').forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(q) ? '' : 'none';
+      });
+    });
+
+    // Export button demo
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      alert('Export to CSV — demo placeholder.');
+    });
+
+    // Clear form
+    function clearForm(){
+      postJobForm.reset();
+    }
+
+    // Accessibility: close modal with Esc
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>
