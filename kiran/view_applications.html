@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Job Portal — Applicant Dashboard (Demo)</title>
+  <style>
+    :root{
+      --bg:#f5f7fb; --card:#ffffff; --muted:#6b7280; --accent:#0ea5a4; --accent-2:#0369a1;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;color:#0f172a;background:linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);}
+    header{padding:18px 20px;background:linear-gradient(90deg,var(--accent)10%,var(--accent-2)60%);color:white}
+    .wrap{max-width:1100px;margin:20px auto;padding:0 16px}
+
+    .top{display:flex;gap:12px;align-items:center;justify-content:space-between}
+    h1{font-size:20px;margin:0}
+    .subtitle{font-size:13px;opacity:0.95}
+
+    .grid{display:grid;grid-template-columns:320px 1fr;gap:18px;margin-top:16px}
+
+    /* left panel */
+    .panel{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(14,20,30,0.06)}
+    .jobs-list{display:flex;flex-direction:column;gap:8px;max-height:520px;overflow:auto;padding-right:6px}
+    .job-item{padding:10px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+    .job-item:hover{background:#f8fafc}
+    .job-item.active{border-color:rgba(3,105,161,0.12);box-shadow:0 4px 10px rgba(3,105,161,0.06)}
+    .job-meta{display:flex;justify-content:space-between;align-items:center;font-size:13px}
+    .job-title{font-weight:600}
+    .small{font-size:12px;color:var(--muted)}
+
+    /* right content */
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+    .filter{display:flex;gap:8px;align-items:center}
+    select,input[type=search]{padding:8px 10px;border-radius:8px;border:1px solid #e6eef6}
+    button{background:var(--accent);color:white;padding:9px 12px;border-radius:8px;border:0;cursor:pointer}
+    button.secondary{background:#eef2f7;color:var(--accent-2)}
+
+    .applicants{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+    .card{background:var(--card);padding:12px;border-radius:10px;border:1px solid #e9eef6}
+    .card h3{margin:0 0 6px 0}
+    .skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+    .skill{padding:6px 8px;border-radius:999px;background:#f1f8f8;font-size:12px}
+
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:8px;align-items:center}
+    .spacer{flex:1}
+
+    /* modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:none;align-items:center;justify-content:center;padding:16px}
+    .modal{background:var(--card);border-radius:12px;max-width:760px;width:100%;padding:16px;box-shadow:0 10px 50px rgba(2,6,23,0.4)}
+
+    table{width:100%;border-collapse:collapse}
+    td,th{padding:8px;border-bottom:1px dashed #eef3f8}
+
+    .count-bubble{background:#effbf9;color:#064e3b;padding:6px 8px;border-radius:999px;font-weight:600}
+
+    /* responsive */
+    @media (max-width:900px){.grid{grid-template-columns:1fr;}.jobs-list{max-height:220px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap top">
+      <div>
+        <h1>Job Portal — Applicant Dashboard (Demo)</h1>
+        <div class="subtitle">View applicants, filter by skills/education/experience, shortlist & download CVs</div>
+      </div>
+      <div class="row">
+        <div class="count-bubble" id="totalJobs">0 jobs</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="grid">
+      <aside class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <strong>My Job Posts</strong>
+          <button class="secondary" id="newJobBtn">+ Add (demo)</button>
+        </div>
+
+        <div class="jobs-list" id="jobsList" aria-live="polite"></div>
+
+        <hr style="margin:12px 0;border:none;border-top:1px dashed #eef3f8">
+        <div class="small muted">Tip: Click a job to see applicants. Shortlisted candidates are saved in your browser.</div>
+      </aside>
+
+      <main>
+        <div class="panel" style="margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+            <div style="min-width:220px">
+              <label class="small">Selected job</label>
+              <div id="selectedJobTitle">— choose a job —</div>
+            </div>
+
+            <div class="filter">
+              <label class="small">Filter by skill</label>
+              <select id="skillFilter">
+                <option value="">(All skills)</option>
+              </select>
+            </div>
+
+            <div class="filter">
+              <label class="small">Education</label>
+              <select id="eduFilter"><option value="">(Any)</option><option>Bachelor's</option><option>Master's</option><option>PhD</option><option>Diploma</option></select>
+            </div>
+
+            <div class="filter">
+              <label class="small">Min experience (yrs)</label>
+              <select id="expFilter"><option value="0">0</option><option>1</option><option>2</option><option>3</option><option>5</option></select>
+            </div>
+
+            <div class="spacer"></div>
+            <div class="small muted">Showing <span id="shownCount">0</span> of <span id="totalApplicants">0</span> applicants</div>
+          </div>
+        </div>
+
+        <div id="applicantsArea">
+          <div class="applicants" id="applicantsGrid"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <strong id="modalName">Applicant</strong>
+        <div><button id="closeModal" class="secondary">Close</button></div>
+      </div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Dummy database (client-side) ----------
+    // Jobs array: each job has id, title, postedDate, requiredSkills
+    const jobs = [
+      {id: 'j1', title: 'Frontend Developer', postedDate: '2025-11-01', requiredSkills: ['JavaScript','HTML','CSS','React']},
+      {id: 'j2', title: 'Data Analyst', postedDate: '2025-10-15', requiredSkills: ['SQL','Python','Excel']},
+      {id: 'j3', title: 'Fullstack Engineer', postedDate: '2025-12-01', requiredSkills: ['Node.js','React','MongoDB','Docker']}
+    ];
+
+    // Applicants: each has id, jobId, name, education, experience (yrs), skills array, appliedDate, cv (text)
+    const applicants = [
+      {id:'a1', jobId:'j1', name:'Anita Sharma', education:"Bachelor's", experience:2, skills:['HTML','CSS','JavaScript'], appliedDate:'2025-12-04', cv:'Anita Sharma\nFrontend Developer\nExperience: 2 years\nSkills: HTML, CSS, JavaScript, React (basic)'},
+      {id:'a2', jobId:'j1', name:'Vikram Rao', education:"Master's", experience:4, skills:['JavaScript','React','CSS'], appliedDate:'2025-12-05', cv:'Vikram Rao\nFrontend Engineer\nExperience: 4 years\nSkills: JS, React, Redux'},
+      {id:'a3', jobId:'j2', name:'Meena Patel', education:"Bachelor's", experience:1, skills:['SQL','Excel'], appliedDate:'2025-11-18', cv:'Meena Patel\nData Analyst\nSkills: SQL, Excel, Tableau'},
+      {id:'a4', jobId:'j3', name:'Rahul Verma', education:"Bachelor's", experience:5, skills:['Node.js','MongoDB','React','Docker'], appliedDate:'2025-12-06', cv:'Rahul Verma\nFullstack\nExperience: 5 years\nSkills: Node, React, MongoDB, Docker'},
+      {id:'a5', jobId:'j3', name:'Sana Khan', education:"Master's", experience:3, skills:['Node.js','React'], appliedDate:'2025-12-02', cv:'Sana Khan\nFullstack developer\nExperience: 3 years\nSkills: Node.js, React'}
+    ];
+
+    // Load shortlist from localStorage
+    const SHORT_KEY = 'demo_shortlist_v1';
+    const getShortlist = ()=> JSON.parse(localStorage.getItem(SHORT_KEY) || '[]');
+    const setShortlist = (arr)=> localStorage.setItem(SHORT_KEY, JSON.stringify(arr));
+
+    // ---------- UI wiring ----------
+    const jobsListEl = document.getElementById('jobsList');
+    const totalJobsEl = document.getElementById('totalJobs');
+    const selectedJobTitleEl = document.getElementById('selectedJobTitle');
+    const applicantsGrid = document.getElementById('applicantsGrid');
+    const skillFilter = document.getElementById('skillFilter');
+    const eduFilter = document.getElementById('eduFilter');
+    const expFilter = document.getElementById('expFilter');
+    const shownCountEl = document.getElementById('shownCount');
+    const totalApplicantsEl = document.getElementById('totalApplicants');
+    const shownCountBadge = document.getElementById('shownCount');
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modalContent');
+    const modalName = document.getElementById('modalName');
+    const newJobBtn = document.getElementById('newJobBtn');
+
+    let selectedJobId = null;
+
+    function renderJobs(){
+      jobsListEl.innerHTML = '';
+      totalJobsEl.textContent = jobs.length + (jobs.length===1? ' job':' jobs');
+      jobs.forEach(j => {
+        const count = applicants.filter(a=>a.jobId===j.id).length;
+        const div = document.createElement('div');
+        div.className='job-item';
+        if(j.id===selectedJobId) div.classList.add('active');
+        div.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="job-title">${escapeHtml(j.title)}</div>
+              <div class="small muted">Posted: ${j.postedDate}</div>
+            </div>
+            <div style="text-align:right">
+              <div class="small">Applicants</div>
+              <div style="font-weight:700">${count}</div>
+            </div>
+          </div>
+        `;
+        div.onclick = ()=>{ selectedJobId = j.id; renderJobs(); renderJobDetails(); }
+        jobsListEl.appendChild(div);
+      });
+    }
+
+    function escapeHtml(s){ return (s+'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]); }
+
+    function renderJobDetails(){
+      const job = jobs.find(x=>x.id===selectedJobId);
+      if(!job){ selectedJobTitleEl.textContent = '— choose a job —'; applicantsGrid.innerHTML=''; totalApplicantsEl.textContent = '0'; shownCountEl.textContent='0'; populateSkillOptions([]); return; }
+      selectedJobTitleEl.innerHTML = `${escapeHtml(job.title)} <span class="small muted">(Posted: ${job.postedDate})</span>`;
+      const jobApplicants = applicants.filter(a=>a.jobId===job.id).sort((a,b)=> new Date(b.appliedDate)-new Date(a.appliedDate));
+      totalApplicantsEl.textContent = jobApplicants.length;
+      populateSkillOptions(job.requiredSkills);
+      applyFiltersAndRender(jobApplicants);
+    }
+
+    function populateSkillOptions(skills){
+      // fill skillFilter with job skills
+      skillFilter.innerHTML = '<option value="">(All skills)</option>';
+      skills.forEach(s=>{
+        const opt = document.createElement('option'); opt.value = s; opt.textContent = s; skillFilter.appendChild(opt);
+      })
+    }
+
+    function applyFiltersAndRender(list){
+      const skill = skillFilter.value;
+      const edu = eduFilter.value;
+      const minExp = Number(expFilter.value || 0);
+      let filtered = list.filter(a=> a.experience >= minExp );
+      if(skill) filtered = filtered.filter(a=> a.skills.map(x=>x.toLowerCase()).includes(skill.toLowerCase()));
+      if(edu) filtered = filtered.filter(a=> a.education === edu);
+      shownCountEl.textContent = filtered.length;
+      renderApplicants(filtered);
+    }
+
+    function renderApplicants(list){
+      applicantsGrid.innerHTML = '';
+      const shortlist = getShortlist();
+      if(list.length===0){ applicantsGrid.innerHTML = '<div class="muted">No applicants match the filters.</div>'; return; }
+      list.forEach(a=>{
+        const card = document.createElement('div'); card.className='card';
+        card.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <h3>${escapeHtml(a.name)}</h3>
+              <div class="small muted">Applied: ${a.appliedDate} • ${a.education} • ${a.experience} yrs</div>
+            </div>
+            <div style="text-align:right">
+              <div style="margin-bottom:8px">${a.skills.map(s=>'<span class="skill">'+escapeHtml(s)+'</span>').join('')}</div>
+              <div class="small muted">ID: ${a.id}</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+            <button onclick="viewApplicant('${a.id}')">View</button>
+            <button class="secondary" onclick="downloadCv('${a.id}')">Download CV</button>
+            <button onclick="toggleShortlist('${a.id}')">${shortlist.includes(a.id)? 'Unshortlist' : 'Shortlist'}</button>
+            <div class="spacer"></div>
+            <div class="small muted">${a.skills.includes('React')? 'React':' '}</div>
+          </div>
+        `;
+        applicantsGrid.appendChild(card);
+      })
+    }
+
+    // ---------- actions ----------
+    window.viewApplicant = function(id){
+      const a = applicants.find(x=>x.id===id);
+      if(!a) return;
+      modalName.textContent = a.name;
+      modalContent.innerHTML = `
+        <table>
+          <tr><th>Name</th><td>${escapeHtml(a.name)}</td></tr>
+          <tr><th>Education</th><td>${escapeHtml(a.education)}</td></tr>
+          <tr><th>Experience</th><td>${a.experience} years</td></tr>
+          <tr><th>Skills</th><td>${a.skills.join(', ')}</td></tr>
+          <tr><th>Applied</th><td>${a.appliedDate}</td></tr>
+        </table>
+        <h4 style="margin-top:12px">CV / Resume</h4>
+        <pre style="white-space:pre-wrap;background:#f8fafc;padding:10px;border-radius:8px">${escapeHtml(a.cv)}</pre>
+        <div style="display:flex;gap:8px;margin-top:10px"><button onclick="downloadCv('${a.id}')">Download CV</button><button class="secondary" onclick="toggleShortlist('${a.id}')">${getShortlist().includes(a.id)? 'Unshortlist' : 'Shortlist'}</button></div>
+      `;
+      modal.style.display='flex';
+    }
+
+    window.downloadCv = function(id){
+      const a = applicants.find(x=>x.id===id); if(!a) return;
+      const blob = new Blob([a.cv], {type:'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a'); link.href = url; link.download = a.name.replace(/\s+/g,'_') + '_CV.txt'; document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+    }
+
+    window.toggleShortlist = function(id){
+      const list = getShortlist();
+      const idx = list.indexOf(id);
+      if(idx>=0) list.splice(idx,1); else list.push(id);
+      setShortlist(list);
+      renderJobDetails();
+      alert((idx>=0? 'Removed from shortlist':'Added to shortlist'));
+    }
+
+    // ---------- small helper to add demo job (not persisted) ----------
+    newJobBtn.onclick = ()=>{
+      const newId = 'j' + (jobs.length+1);
+      jobs.push({id:newId, title:'New Demo Role '+(jobs.length+1), postedDate: new Date().toISOString().slice(0,10), requiredSkills: ['SkillA','SkillB']});
+      renderJobs();
+      alert('Added demo job. This demo uses in-memory data only. Save the file and edit the JS to make persistent data.');
+    }
+
+    // ---------- modal close ----------
+    document.getElementById('closeModal').onclick = ()=> modal.style.display='none';
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) modal.style.display='none'; });
+
+    // ---------- filters ----------
+    skillFilter.onchange = ()=>{ if(selectedJobId) renderJobDetails(); }
+    eduFilter.onchange = ()=> applyFiltersAndRender(applicants.filter(a=>a.jobId===selectedJobId))
+    expFilter.onchange = ()=> applyFiltersAndRender(applicants.filter(a=>a.jobId===selectedJobId))
+
+    // ---------- initial render ----------
+    renderJobs();
+
+    // Select first job by default
+    if(jobs.length>0){ selectedJobId = jobs[0].id; renderJobs(); renderJobDetails(); }
+
+    // Expose some dev helpers in console
+    console.log('Demo applicants:', applicants);
+    console.log('Shortlist key in localStorage:', SHORT_KEY);
+  </script>
+</body>
+</html>
