@@ -1,108 +1,111 @@
  body {
         margin: 0;
-        padding: 0;
-        background: #0a0f2c;
         font-family: Arial, sans-serif;
+        background: #f7f7f7;
+    }
+
+    .wrapper {
         display: flex;
-        justify-content: center;
-        align-items: center;
         height: 100vh;
     }
 
-    .card {
+    .left-side {
+        flex: 1.2;
+        background: url("https://i.pinimg.com/736x/e4/e2/d4/e4e2d47572f6ce2a436ace4b046306b2.jpg") no-repeat center;
+        background-size: cover;
+        position: relative;
+    }
+
+    .left-side::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.25);
+    }
+
+    .right-side {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+    }
+
+    .login-box {
         width: 380px;
         background: white;
-        padding: 20px;
+        padding: 30px;
         border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 0 20px rgba(0,0,0,0.25);
+        animation: fadeIn 0.7s ease;
     }
 
-    /* MAIN TABS (Seeker / Recruiter) */
-    .tabs {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        background: #f2f2f2;
-        padding: 5px;
-        border-radius: 30px;
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    .tab {
-        width: 50%;
-        text-align: center;
-        padding: 10px 0;
+    .tabs button {
+        width: 48%;
+        padding: 10px;
+        border: none;
+        background: #eaeaea;
+        border-radius: 8px;
+        margin-top: 5px;
+        font-size: 15px;
         cursor: pointer;
-        border-radius: 20px;
+    }
+
+    .tabs button.active {
+        background: #007bff;
+        color: white;
         font-weight: bold;
-        color: #555;
-    }
-
-    .tab.active {
-        background: white;
-        color: black;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-
-    /* SUB-TABS (Login / Register) */
-    .subtabs {
-        display: flex;
-        justify-content: space-between;
-        background: #eee;
-        padding: 5px;
-        border-radius: 25px;
-        margin-bottom: 15px;
-    }
-
-    .subtab {
-        width: 50%;
-        text-align: center;
-        padding: 8px 0;
-        cursor: pointer;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: bold;
-        color: #666;
-    }
-
-    .subtab.active {
-        background: white;
-        color: black;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
-
-    .form-container {
-        display: none;
-    }
-
-    .form-container.active {
-        display: block;
     }
 
     input {
         width: 100%;
         padding: 12px;
-        margin: 8px 0;
-        border-radius: 8px;
+        margin-top: 12px;
         border: 1px solid #ccc;
+        border-radius: 8px;
     }
 
-    .btn {
+    .login-btn {
         width: 100%;
         padding: 12px;
-        margin-top: 10px;
-        background: #005bff;
+        background: #0066ff;
         color: white;
         border: none;
         border-radius: 8px;
-        cursor: pointer;
+        margin-top: 15px;
         font-size: 16px;
+        cursor: pointer;
         font-weight: bold;
     }
 
-    a {
-        display: block;
-        text-align: right;
-        font-size: 13px;
-        color: #005bff;
-        text-decoration: none;
+    header {
+        width: 100%;
+        padding: 15px 30px;
+        background: rgba(0,0,0,0.6);
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        font-size: 20px;
+        font-weight: bold;
     }
+
+    footer {
+        width: 100%;
+        padding: 10px;
+        background: rgba(0,0,0,0.5);
+        color: white;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+    }
+
+    .hidden { display: none; }

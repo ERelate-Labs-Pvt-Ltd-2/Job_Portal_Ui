@@ -3,127 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Job Portal – Seeker & Recruiter Login/Register</title>
-<link rel="stylesheet" href="css/login_register.css">
+<title>Job Portal</title>
+<link rel="stylesheet" href="css/login_register.css"> 
 </head>
-
 <body>
 
-<div class="card">
+<header>Job Portal</header>
 
-    <!-- MAIN TABS -->
-    <div class="tabs">
-        <div class="tab active" id="seekerTab">Seeker</div>
-        <div class="tab" id="recruiterTab">Recruiter</div>
+<div class="wrapper">
+    <div class="left-side"></div>
+
+    <div class="right-side">
+        <div class="login-box">
+            <h4 style="text-align:center; font-size: 24px; font-weight:600;">Connecting Ambitious Talent with Opportunities</h4>
+
+        
+            <div class="tabs">
+                <button id="seekerTab" class="active">Seeker</button>
+                <button id="recruiterTab">Recruiter</button>
+            </div>
+
+        
+            <div class="tabs">
+                <button id="loginTab" class="active">Login</button>
+               
+                <button id="registerTab">Register</button>
+            </div>
+
+            <h3 id="formTitle" style="text-align:center; margin-top:20px;">Seeker Login</h3>
+
+         
+            <div id="loginForm">
+                <input type="email" placeholder="Enter email">
+                <input type="password" placeholder="Enter password">
+                <button class="login-btn">Login</button>
+                 <a href="homepage.html" >Login</a>
+            </div>
+
+          
+            <div id="registerForm" class="hidden">
+                <input type="text" placeholder="Full Name">
+                <input type="email" placeholder="Enter email">
+                <input type="password" placeholder="Create password">
+                <button class="login-btn">Register</button>
+            </div>
+            <p style="text-align:center; margin-top:10px;">
+    <a href="forgot_pass.html" style="font-size:14px;">Forgot Password?</a>
+</p>
+
+        </div>
     </div>
-
-    <!-- SUB-TABS (Login / Register) -->
-    <div class="subtabs" id="subtabs">
-        <div class="subtab active" id="loginTab">Login</div>
-        <div class="subtab" id="registerTab">Register</div>
-    </div>
-
-    <!-- 4 FORMS (All Hidden Except Active One) -->
-
-    <!-- SEEKER LOGIN -->
-    <div id="seekerLogin" class="form-container active">
-        <h3>Seeker Login</h3>
-        <input type="email" placeholder="Enter email">
-        <input type="password" placeholder="Enter password">
-        <a href="#">Forgot password?</a>
-        <button class="btn">Login</button>
-    </div>
-
-    <!-- SEEKER REGISTER -->
-    <div id="seekerRegister" class="form-container">
-        <h3>Seeker Registration</h3>
-        <input type="text" placeholder="Full name">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <input type="password" placeholder="Confirm password">
-        <button class="btn">Register</button>
-    </div>
-
-    <!-- RECRUITER LOGIN -->
-    <div id="recruiterLogin" class="form-container">
-        <h3>Recruiter Login</h3>
-        <input type="email" placeholder="Company email">
-        <input type="password" placeholder="Enter password">
-        <a href="#">Forgot password?</a>
-        <button class="btn">Login</button>
-    </div>
-
-    <!-- RECRUITER REGISTER -->
-    <div id="recruiterRegister" class="form-container">
-        <h3>Recruiter Registration</h3>
-        <input type="text" placeholder="Full name">
-        <input type="text" placeholder="Company name">
-        <input type="email" placeholder="Company email">
-        <input type="password" placeholder="Create password">
-        <input type="password" placeholder="Confirm password">
-        <button class="btn">Register</button>
-    </div>
-
 </div>
 
+<footer>© 2025 Job Portal | All Rights Reserved</footer>
 
 <script>
-    // Main tabs
     const seekerTab = document.getElementById("seekerTab");
     const recruiterTab = document.getElementById("recruiterTab");
-
-    // Sub tabs
     const loginTab = document.getElementById("loginTab");
     const registerTab = document.getElementById("registerTab");
+    const formTitle = document.getElementById("formTitle");
 
-    // Forms
-    const seekerLogin = document.getElementById("seekerLogin");
-    const seekerRegister = document.getElementById("seekerRegister");
-    const recruiterLogin = document.getElementById("recruiterLogin");
-    const recruiterRegister = document.getElementById("recruiterRegister");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
 
-    function showForm() {
-        // Hide all
-        seekerLogin.classList.remove("active");
-        seekerRegister.classList.remove("active");
-        recruiterLogin.classList.remove("active");
-        recruiterRegister.classList.remove("active");
+    let userType = "Seeker";
+    let authType = "Login";
 
-        // Show based on selected tab
-        if (seekerTab.classList.contains("active")) {
-            if (loginTab.classList.contains("active")) seekerLogin.classList.add("active");
-            else seekerRegister.classList.add("active");
-        } 
-        else {
-            if (loginTab.classList.contains("active")) recruiterLogin.classList.add("active");
-            else recruiterRegister.classList.add("active");
-        }
+    function updateTitle() {
+        formTitle.textContent = `${userType} ${authType}`;
     }
 
-    // MAIN TAB SWITCH
+    // Toggle Seeker / Recruiter
     seekerTab.onclick = () => {
+        userType = "Seeker";
         seekerTab.classList.add("active");
         recruiterTab.classList.remove("active");
-        showForm();
+        updateTitle();
     };
 
     recruiterTab.onclick = () => {
+        userType = "Recruiter";
         recruiterTab.classList.add("active");
         seekerTab.classList.remove("active");
-        showForm();
+        updateTitle();
     };
 
-    // SUB TAB SWITCH
+    // Toggle Login / Register
     loginTab.onclick = () => {
+        authType = "Login";
         loginTab.classList.add("active");
         registerTab.classList.remove("active");
-        showForm();
+        loginForm.classList.remove("hidden");
+        registerForm.classList.add("hidden");
+        updateTitle();
     };
 
     registerTab.onclick = () => {
+        authType = "Register";
         registerTab.classList.add("active");
         loginTab.classList.remove("active");
-        showForm();
+        loginForm.classList.add("hidden");
+        registerForm.classList.remove("hidden");
+        updateTitle();
     };
 </script>
 
