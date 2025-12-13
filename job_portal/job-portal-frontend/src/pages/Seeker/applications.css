@@ -1,0 +1,95 @@
+
+
+.controls input[type="text"], .controls input[type="date"], select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e6eef6;
+  font-size: 14px;
+}
+
+.table-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+  overflow: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th, .table td {
+  padding: 10px;
+  border-bottom: 1px dashed #eef3f8;
+  text-align: left;
+}
+
+.table th {
+  background: #f9fafb;
+  font-weight: 700;
+}
+
+.pager {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:flex-end;
+  padding:12px;
+}
+
+.small { font-size:13px; color: #6b7280; }
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2,6,23,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 60;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(2,6,23,0.4);
+}
+
+.empty {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* Buttons (reuse .btn from seeker.css). Add secondary variant for small actions */
+.btn.small { padding: 8px 12px; border-radius: 8px; font-size: 13px; }
+.btn.secondary { background: #f3f4f6; color: #111827; border: 1px solid #e6eef6; }
+
+/* Badges (status) */
+.badge {
+  display:inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge.submitted { background:#eef2ff; color:#1e40af; }
+.badge.under-review { background:#fffbeb; color:#92400e; }
+.badge.shortlisted { background:#ecfccb; color:#166534; }
+.badge.offered { background:#dcfce7; color:#166534; }
+.badge.rejected { background:#fff1f0; color:#991b1b; }
+.badge.withdrawn { background:#f3f4f6; color:#6b7280; }
+
+/* Responsive */
+@media (max-width: 860px) {
+  .controls { flex-direction: column; align-items: stretch; }
+  .pager { justify-content: center; }
+}
