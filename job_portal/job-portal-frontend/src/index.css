@@ -1,0 +1,97 @@
+:root {
+  --bg: #f5f6f8;
+  --primary: #0b76ef;
+  --muted: #777;
+  --card: #fff;
+}
+
+* { 
+  box-sizing: border-box; 
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: var(--bg);
+  color: #222;
+}
+
+/* Simple container */
+.container {
+  width: 1150px;
+  max-width: 95%;
+  margin: 24px auto;
+}
+
+/* Basic header */
+.header {
+  background: white;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* cards */
+.card {
+  background: var(--card);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+/* basic button */
+.btn {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: var(--primary);
+  color: white;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* ---------------------------------------------------------------- */
+/* 🔥 FIX HEADER TEXT VISIBILITY (ADDED BELOW — DO NOT REMOVE)      */
+/* ---------------------------------------------------------------- */
+
+.header {
+  color: #222 !important;
+  z-index: 1000 !important;
+}
+
+/* Make all header links visible */
+.header a,
+.header a:visited {
+  color: #222 !important;
+  font-weight: 600;
+  text-decoration: none;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Make sure nothing hides the header text */
+.header * {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Hover effect */
+.header a:hover {
+  background: rgba(11,118,239,0.06);
+  border-radius: 6px;
+}
+
+/* Ensure header buttons still use white text */
+.header .btn,
+.header button {
+  color: #fff !important;
+}
