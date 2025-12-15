@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Portal</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f7f7f7;
+    }
+
+    .wrapper {
+        display: flex;
+        height: 100vh;
+    }
+
+    .left-side {
+        flex: 1.2;
+        background: url("https://i.pinimg.com/736x/e4/e2/d4/e4e2d47572f6ce2a436ace4b046306b2.jpg") no-repeat center;
+        background-size: cover;
+        position: relative;
+    }
+
+    .left-side::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.25);
+    }
+
+    .right-side {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+    }
+
+    .login-box {
+        width: 380px;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.25);
+        animation: fadeIn 0.7s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tabs button {
+        width: 48%;
+        padding: 10px;
+        border: none;
+        background: #eaeaea;
+        border-radius: 8px;
+        margin-top: 5px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .tabs button.active {
+        background: #007bff;
+        color: white;
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin-top: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    .login-btn {
+        width: 100%;
+        padding: 12px;
+        background: #0066ff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        margin-top: 15px;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    header {
+        width: 100%;
+        padding: 15px 30px;
+        background: rgba(0,0,0,0.6);
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    footer {
+        width: 100%;
+        padding: 10px;
+        background: rgba(0,0,0,0.5);
+        color: white;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+    }
+
+    .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<header>Job Portal</header>
+
+<div class="wrapper">
+    <div class="left-side"></div>
+
+    <div class="right-side">
+        <div class="login-box">
+            <h4 style="text-align:center; font-size: 24px; font-weight:600;">Connecting Ambitious Talent with Opportunities</h4>
+
+            <!-- Seeker / Recruiter Tabs -->
+            <div class="tabs">
+                <button id="seekerTab" class="active">Seeker</button>
+                <button id="recruiterTab">Recruiter</button>
+            </div>
+
+            <!-- Login / Register Tabs -->
+            <div class="tabs">
+                <button id="loginTab" class="active">Login</button>
+                <button id="registerTab">Register</button>
+            </div>
+
+            <!-- Dynamic Title -->
+            <h3 id="formTitle" style="text-align:center; margin-top:20px;">Seeker Login</h3>
+
+            <!-- LOGIN FORM -->
+            <div id="loginForm">
+                <input type="email" placeholder="Enter email">
+                <input type="password" placeholder="Enter password">
+                <button class="login-btn">Login</button>
+            </div>
+
+            <!-- REGISTER FORM -->
+            <div id="registerForm" class="hidden">
+                <input type="text" placeholder="Full Name">
+                <input type="email" placeholder="Enter email">
+                <input type="password" placeholder="Create password">
+                <button class="login-btn">Register</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>© 2025 Job Portal | All Rights Reserved</footer>
+
+<script>
+    const seekerTab = document.getElementById("seekerTab");
+    const recruiterTab = document.getElementById("recruiterTab");
+    const loginTab = document.getElementById("loginTab");
+    const registerTab = document.getElementById("registerTab");
+    const formTitle = document.getElementById("formTitle");
+
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+
+    let userType = "Seeker";
+    let authType = "Login";
+
+    function updateTitle() {
+        formTitle.textContent = `${userType} ${authType}`;
+    }
+
+    // Toggle Seeker / Recruiter
+    seekerTab.onclick = () => {
+        userType = "Seeker";
+        seekerTab.classList.add("active");
+        recruiterTab.classList.remove("active");
+        updateTitle();
+    };
+
+    recruiterTab.onclick = () => {
+        userType = "Recruiter";
+        recruiterTab.classList.add("active");
+        seekerTab.classList.remove("active");
+        updateTitle();
+    };
+
+    // Toggle Login / Register
+    loginTab.onclick = () => {
+        authType = "Login";
+        loginTab.classList.add("active");
+        registerTab.classList.remove("active");
+        loginForm.classList.remove("hidden");
+        registerForm.classList.add("hidden");
+        updateTitle();
+    };
+
+    registerTab.onclick = () => {
+        authType = "Register";
+        registerTab.classList.add("active");
+        loginTab.classList.remove("active");
+        loginForm.classList.add("hidden");
+        registerForm.classList.remove("hidden");
+        updateTitle();
+    };
+</script>
+
+</body>
+</html>
